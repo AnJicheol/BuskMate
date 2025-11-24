@@ -1,15 +1,13 @@
 package org.example.buskmate.dto.crud.d;
 
 public record BuskingDeleteResponse(
-        String buskingId,
-        String name
+        String result
 )
 {
     public static BuskingDeleteResponse of(
-            String buskingId,
-            String name
+            String result
     )
     {
-        return new BuskingDeleteResponse(buskingId, name);
+        return new BuskingDeleteResponse(result);
     }
 }

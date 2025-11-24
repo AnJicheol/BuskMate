@@ -6,10 +6,10 @@ import org.example.buskmate.dto.crud.c.BuskingCreateRequest;
 import org.example.buskmate.dto.crud.c.BuskingCreateResponse;
 import org.example.buskmate.dto.crud.d.BuskingDeleteRequest;
 import org.example.buskmate.dto.crud.d.BuskingDeleteResponse;
-import org.example.buskmate.dto.crud.r.BuskingShowAllRequest;
+import org.example.buskmate.dto.crud.r.BuskingSellectAllRequest;
 import org.example.buskmate.dto.crud.r.BuskingSellectAllResponse;
 import org.example.buskmate.dto.crud.r.BuskingSellectOneRequest;
-import org.example.buskmate.dto.crud.r.BuskingShowOneResponse;
+import org.example.buskmate.dto.crud.r.BuskingSellectOneResponse;
 import org.example.buskmate.dto.crud.u.BuskingEditRequest;
 import org.example.buskmate.dto.crud.u.BuskingEditResponse;
 import org.example.buskmate.service.BuskingService;
@@ -32,15 +32,15 @@ public class BuskingController {
 
     // 2. 전체 조회
     @GetMapping("/showall")
-    public ResponseEntity<BuskingSellectAllResponse> buskingShowAll(@ModelAttribute BuskingShowAllRequest req){
+    public ResponseEntity<BuskingSellectAllResponse> buskingShowAll(@ModelAttribute BuskingSellectAllRequest req){
         BuskingSellectAllResponse response = buskingService.buskingShowAll(req);
         return ResponseEntity.ok(response);
     }
 
     // 3. 단일 조회
     @GetMapping("/showone")
-    public ResponseEntity<BuskingShowOneResponse> buskingShowOne(@ModelAttribute BuskingSellectOneRequest req){
-        BuskingShowOneResponse response = buskingService.buskingShowOne(req);
+    public ResponseEntity<BuskingSellectOneResponse> buskingShowOne(@ModelAttribute BuskingSellectOneRequest req){
+        BuskingSellectOneResponse response = buskingService.buskingShowOne(req);
         return ResponseEntity.ok(response);
     }
 

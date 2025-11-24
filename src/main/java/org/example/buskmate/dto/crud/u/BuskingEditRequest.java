@@ -2,6 +2,9 @@ package org.example.buskmate.dto.crud.u;
 
 public record BuskingEditRequest(
         String buskingId,
-        String name
+        String title,
+        String place,
+        String buskingStart,
+        String buskingEnd
 )
 { }

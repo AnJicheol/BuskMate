@@ -1,15 +1,24 @@
 package org.example.buskmate.dto.crud.u;
 
 public record BuskingEditResponse(
-        String buskingId,
-        String name
+        String title,
+        String place,
+        String buskingStart,
+        String buskingEnd
 )
 {
     public static BuskingEditResponse of(
-            String buskingId,
-            String name
+            String title,
+            String place,
+            String buskingStart,
+            String buskingEnd
     )
     {
-        return new BuskingEditResponse(buskingId, name);
+        return new BuskingEditResponse(
+                title,
+                place,
+                buskingStart,
+                buskingEnd
+        );
     }
 }
