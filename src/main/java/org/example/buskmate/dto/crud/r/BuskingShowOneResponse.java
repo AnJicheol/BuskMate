@@ -1,15 +1,15 @@
 package org.example.buskmate.dto.crud.r;
 
-public record BuskingSellectOneResponse(
+public record BuskingShowOneResponse(
         String buskingId,
         String name
 )
 {
-    public static BuskingSellectOneResponse of(
+    public static BuskingShowOneResponse of(
             String buskingId,
             String name
     )
     {
-        return new BuskingSellectOneResponse(buskingId, name);
+        return new BuskingShowOneResponse(buskingId, name);
     }
 }
