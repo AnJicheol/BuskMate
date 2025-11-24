@@ -1,5 +1,5 @@
 package org.example.buskmate.dto.crud.r;
 
-public record BuskingSellectAllRequest(
+public record BuskingSelectOneRequest(
         String buskingId
 ) { }

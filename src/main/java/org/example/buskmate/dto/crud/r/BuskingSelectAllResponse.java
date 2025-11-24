@@ -1,14 +1,13 @@
 package org.example.buskmate.dto.crud.r;
 
-public record BuskingSellectOneResponse(
+public record BuskingSelectAllResponse(
         String buskingId,
         String title,
         String place,
         String buskingStart,
         String buskingEnd
-)
-{
-    public static BuskingSellectOneResponse of(
+) {
+    public static BuskingSelectAllResponse of(
             String buskingId,
             String title,
             String place,
@@ -16,7 +15,7 @@ public record BuskingSellectOneResponse(
             String buskingEnd
     )
     {
-        return new BuskingSellectOneResponse(
+        return new BuskingSelectAllResponse(
                 buskingId,
                 title,
                 place,
