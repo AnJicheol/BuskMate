@@ -25,8 +25,7 @@ public class BuskingServiceImpl implements BuskingService {
 
     // 1. 생성
     @Transactional
-    public BuskingCreateResponse buskingCreate(BuskingCreateRequest req) {
-        // Implementation code here
+    public void buskingCreate(BuskingCreateRequest req) {
         String ulid = UlidCreator.getUlid().toString();
         Busking busking = new Busking(
                 ulid,
@@ -36,12 +35,11 @@ public class BuskingServiceImpl implements BuskingService {
                 req.buskingEnd()
         );
         buskingRepo.save(busking);
-
-        return null;
     }
     // 2. 조회
     public BuskingSelectAllResponse buskingSelectAll(BuskingSelectAllRequest req) {
-        // Implementation code here
+//        // Implementation code here
+//        BuskingSelectAllResponse response = buskingRepo.findAll();
         return null;
     }
     public BuskingSelectOneResponse buskingSelectOne(BuskingSelectOneRequest req) {

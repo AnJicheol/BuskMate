@@ -25,9 +25,9 @@ public class BuskingController {
 
     // 1. 생성
     @PostMapping("/create")
-    public ResponseEntity<BuskingCreateResponse> buskingCreate(@RequestBody BuskingCreateRequest req) {
-        BuskingCreateResponse response = buskingService.buskingCreate(req);
-        return ResponseEntity.ok(response);
+    public void buskingCreate(@RequestBody BuskingCreateRequest req) {
+        buskingService.buskingCreate(req);
+        return ResponseEntity.created.noContent().build();
     }
 
     // 2. 전체 조회

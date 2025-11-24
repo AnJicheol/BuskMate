@@ -13,12 +13,12 @@ import org.example.buskmate.dto.crud.u.BuskingEditResponse;
 
 public interface BuskingService {
     // 1. 생성
-    public BuskingCreateResponse buskingCreate(BuskingCreateRequest req);
+    void buskingCreate(BuskingCreateRequest req);
     // 2. 조회
-    public BuskingSelectAllResponse buskingSelectAll(BuskingSelectAllRequest req);
-    public BuskingSelectOneResponse buskingSelectOne(BuskingSelectOneRequest req);
+    BuskingSelectAllResponse buskingSelectAll(BuskingSelectAllRequest req);
+    BuskingSelectOneResponse buskingSelectOne(BuskingSelectOneRequest req);
     // 3. 수정
-    public BuskingEditResponse buskingEdit(BuskingEditRequest req);
+    BuskingEditResponse buskingEdit(BuskingEditRequest req);
     // 4. 삭제
-    public BuskingDeleteResponse buskingDelete(BuskingDeleteRequest req);
+    BuskingDeleteResponse buskingDelete(BuskingDeleteRequest req);
 }
