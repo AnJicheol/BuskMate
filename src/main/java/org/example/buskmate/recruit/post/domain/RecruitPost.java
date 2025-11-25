@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.example.buskmate.band.domain.Band;
 
 import java.time.LocalDateTime;
 /**
