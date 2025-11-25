@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 public record BuskingSelectOneResponse(
         String title,
-        String place,
         LocalDateTime buskingStart,
         LocalDateTime buskingEnd
 )
@@ -15,7 +14,6 @@ public record BuskingSelectOneResponse(
     {
         return new BuskingSelectOneResponse(
                 b.getTitle(),
-                b.getPlace(),
                 b.getBuskingStart(),
                 b.getBuskingEnd()
         );

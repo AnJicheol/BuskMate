@@ -25,10 +25,6 @@ public class Busking {
     @Column(nullable = false)
     private String title;
 
-    // 공연 장소
-    @Column(nullable = false)
-    private String place;
-
     // 공연 시작/종료 시간
     @Column(nullable = false)
     private LocalDateTime buskingStart;
@@ -37,13 +33,11 @@ public class Busking {
     public Busking(
             String buskingId,
             String title,
-            String place,
             LocalDateTime buskingStart,
             LocalDateTime buskingEnd
     ) {
         this.buskingId = buskingId;
         this.title = title;
-        this.place = place;
         this.buskingStart = buskingStart;
         this.buskingEnd = buskingEnd;
     }

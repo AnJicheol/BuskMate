@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 public record BuskingCreateResponse(
         String buskingId,
         String title,
-        String place,
         LocalDateTime buskingStart,
         LocalDateTime buskingEnd
 )
@@ -13,7 +12,6 @@ public record BuskingCreateResponse(
     public static BuskingCreateResponse of(
             String buskingId,
             String title,
-            String place,
             LocalDateTime buskingStart,
             LocalDateTime buskingEnd
     )
@@ -21,7 +19,6 @@ public record BuskingCreateResponse(
         return new BuskingCreateResponse(
                 buskingId,
                 title,
-                place,
                 buskingStart,
                 buskingEnd
         );
