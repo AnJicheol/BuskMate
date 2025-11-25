@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Entity@Table(name = "recruit_posts",
-        indexes = {@Index(name = "idx_recruitpost_post_id", columnList = "postId", unique = true)})
+        indexes = {@Index(name = "idx_recruitpost_post_id", columnList = "post_id", unique = true)})
 public class RecruitPost {
 
     @Id
@@ -42,8 +42,9 @@ public class RecruitPost {
     @Column(name="post_id", nullable = false, unique=true)
     private String postId;
 
-    @Column(name="band_id", nullable = false)
-    private String bandId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "band_id", nullable = false)
+    private Band band;
 
     @Column(nullable = false)
     private String title;
@@ -59,9 +60,9 @@ public class RecruitPost {
     private LocalDateTime createdAt;
 
     @Builder
-    private RecruitPost(String postId, String bandId, String title, String content) {
+    private RecruitPost(String postId, Band band, String title, String content) {
         this.postId = postId;
-        this.bandId = bandId;
+        this.band = band;
         this.title = title;
         this.content = content;
         this.status = RecruitPostStatus.OPEN;
