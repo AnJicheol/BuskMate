@@ -15,6 +15,7 @@ import org.example.buskmate.dto.crud.r.BuskingSelectOneResponse;
 import org.example.buskmate.dto.crud.u.BuskingEditRequest;
 import org.example.buskmate.dto.crud.u.BuskingEditResponse;
 import org.example.buskmate.service.BuskingService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +44,7 @@ public class BuskingController {
     )
     public ResponseEntity<Void> buskingCreate(@RequestBody BuskingCreateRequest req) {
         buskingService.buskingCreate(req);
-        return ResponseEntity.status(201).build(); //HTTP 상수 이용
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // 2. 전체 조회

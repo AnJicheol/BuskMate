@@ -36,6 +36,7 @@ public class BuskingServiceImpl implements BuskingService {
     }
     // 2. 조회
     // 2-1. 전체 조회
+    @Transactional(readOnly = true)
     public List<BuskingSelectAllResponse> buskingSelectAll() {
         return buskingRepo.findAllBusking()
                 .stream()
@@ -43,6 +44,7 @@ public class BuskingServiceImpl implements BuskingService {
                 .toList();
     }
     // 2-2. 단일 조회
+    @Transactional(readOnly = true)
     public BuskingSelectOneResponse buskingSelectOne(BuskingSelectOneRequest req) {
         return buskingRepo.findOneBusking(req.buskingId())
                 .map(BuskingSelectOneResponse :: of)
@@ -59,6 +61,7 @@ public class BuskingServiceImpl implements BuskingService {
         return BuskingEditResponse.of(busking);
     }
     // 4. 삭제
+    @Transactional
     public void buskingDelete(BuskingDeleteRequest req) {
         Busking busking = buskingRepo.findOneBusking(req.buskingId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 버스킹 없음"));
