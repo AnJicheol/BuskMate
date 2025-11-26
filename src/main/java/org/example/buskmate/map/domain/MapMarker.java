@@ -1,102 +1,58 @@
-package org.example.buskmate.map.domain;
+    package org.example.buskmate.map.domain;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+    import jakarta.persistence.*;
+    import lombok.Getter;
+    import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+    import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "map_marker")
-@NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
-@Getter
-public class MapMarker {
+    @Entity
+    @Table(name = "map_marker")
+    @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
+    @Getter
+    public class MapMarker {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "marker_type", nullable = false)
-    private MarkerType markerType;
 
-    @Column(name = "band_id")
-    private String bandId;
+        @Enumerated(EnumType.STRING)
+        @Column(name = "marker_type", nullable = false)
+        private MarkerType markerType;
 
-    @Column(name = "busking_id")
-    private String buskingId;
+        @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+        @JoinColumn(name = "map_location_id", nullable = false, unique = true)
+        private MapLocation location;
 
-    @Column(name = "lat", nullable = false)
-    private double lat;
 
-    @Column(name = "lng", nullable = false)
-    private double lng;
+        @Column(nullable = false)
+        private String title;
 
-    @Column(nullable = false)
-    private String title;
+        private String summary;
 
-    private String summary;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+        @Column(nullable = false, updatable = false)
+        private LocalDateTime createdAt;
 
 
 
 
-    private MapMarker(
-            MarkerType markerType,
-            String bandId,
-            String buskingId,
-            double lat,
-            double lng,
-            String title,
-            String summary
-    ) {
-        this.markerType = markerType;
-        this.bandId = bandId;
-        this.buskingId = buskingId;
-        this.lat = lat;
-        this.lng = lng;
-        this.title = title;
-        this.summary = summary;
-        validateTarget();
-    }
-
-    private void validateTarget() {
-        if (markerType == MarkerType.BAND && bandId == null) {
-            throw new IllegalArgumentException("BAND 마커는 bandId가 필요합니다.");
+        MapMarker(
+                MarkerType markerType,
+                MapLocation location,
+                String title,
+                String summary
+        ) {
+            this.markerType = markerType;
+            this.location = location;
+            this.title = title;
+            this.summary = summary;
         }
-        if (markerType == MarkerType.BUSKING && buskingId == null) {
-            throw new IllegalArgumentException("BUSKING 마커는 buskingId가 필요합니다.");
+
+
+
+        @PrePersist
+        void onPrePersist() {
+            this.createdAt = LocalDateTime.now();
         }
     }
-
-    public static MapMarker bandMarker(String bandId, double lat, double lng, String title, String summary) {
-        return new MapMarker(
-                MarkerType.BAND,
-                bandId,
-                null,
-                lat,
-                lng,
-                title,
-                summary
-        );
-    }
-
-    public static MapMarker buskingMarker(String buskingId, double lat, double lng, String title, String summary) {
-        return new MapMarker(
-                MarkerType.BUSKING,
-                null,
-                buskingId,
-                lat,
-                lng,
-                title,
-                summary
-        );
-    }
-
-    @PrePersist
-    void onPrePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
-}
