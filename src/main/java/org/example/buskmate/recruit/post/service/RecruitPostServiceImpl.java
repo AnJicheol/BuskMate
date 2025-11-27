@@ -90,6 +90,5 @@ public class RecruitPostServiceImpl implements RecruitPostService {
                 .status(post.getStatus())
                 .createdAt(post.getCreatedAt())
                 .build();
-
     }
 }
