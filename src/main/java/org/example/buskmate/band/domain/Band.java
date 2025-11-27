@@ -37,74 +37,26 @@ import java.time.LocalDateTime;
 @Entity
 public class Band {
 
-    /**
-     * 데이터베이스 내부에서 사용되는 고유 식별자입니다.
-     * <p>
-     * 자동 증가(Auto Increment) 방식으로 생성되며, 비즈니스 로직에서는 사용하지 않는 것이 좋습니다.
-     * 대신 {@code bandId}를 사용하세요.
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * 외부에 노출되는 고유 식별자입니다.
-     * <p>
-     * ULID(Universally Unique Lexicographically Sortable Identifier) 형식으로,
-     * UUID보다 효율적인 인덱싱이 가능합니다. 이 값은 생성 후 변경할 수 없습니다.
-     *
-     * @see <a href="https://github.com/ulid/spec">ULID 스펙</a>
-     */
     @Column(name = "band_id", nullable = false, length = 26, unique = true, updatable = false)
     private String bandId;
 
-    /**
-     * 밴드의 이름입니다.
-     * <p>
-     * 최대 60자까지 입력 가능하며, 필수 입력 항목입니다.
-     * {@link #updateInfo(String, String)} 메서드를 통해 수정할 수 있습니다.
-     */
     @Column(nullable = false, length = 60)
     private String name;
 
-    /**
-     * 밴드장(리더)의 사용자 식별자입니다.
-     * <p>
-     * 사용자 도메인의 외부 식별자를 참조합니다.
-     * 이 값은 밴드 생성 시 설정되며, 변경이 필요한 경우 별도의 도메인 이벤트를 통해 처리해야 합니다.
-     */
     @Column(name = "leader_id", nullable = false, length = 64)
     private String leaderId;
 
-    /**
-     * 밴드의 대표 이미지 URL입니다.
-     * <p>
-     * 선택적 필드이며, 이미지가 없는 경우 null일 수 있습니다.
-     * {@link #updateInfo(String, String)} 메서드를 통해 수정할 수 있습니다.
-     */
     @Column(name = "image_url", length = 512)
     private String imageUrl;
 
-    /**
-     * 밴드의 현재 상태를 나타냅니다.
-     * <p>
-     * 기본값은 ACTIVE이며, {@link #deactivate()} 메서드를 호출하여 INACTIVE로 변경할 수 있습니다.
-     * INACTIVE 상태는 소프트 삭제를 의미합니다.
-     *
-     * @see BandStatus
-     */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 16)
     private BandStatus status;
 
-    /**
-     * 밴드가 생성된 일시입니다.
-     * <p>
-     * 엔티티가 처음 영속화될 때 자동으로 현재 시각이 설정되며,
-     * 이후로는 변경할 수 없습니다.
-     *
-     * @see CreationTimestamp
-     */
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -163,18 +115,9 @@ public class Band {
         this.status = BandStatus.INACTIVE;
     }
 
-    /**
-     * 엔티티가 영속화되기 전에 호출되는 콜백 메서드입니다.
-     * <p>
-     * {@code bandId}가 설정되어 있지 않은 경우, 자동으로 ULID를 생성하여 설정합니다.
-     * 이 메서드는 JPA의 {@code @PrePersist} 어노테이션에 의해 자동으로 호출됩니다.
-     *
-     * @see PrePersist
-     */
     @PrePersist
     private void fillBandIdIfNull() {
         if (this.bandId == null || this.bandId.isBlank()) {
-            // com.github.f4b6a3.ulid:ulid-creator 사용 (팀 공통)
             this.bandId = com.github.f4b6a3.ulid.UlidCreator.getUlid().toString();
         }
     }
