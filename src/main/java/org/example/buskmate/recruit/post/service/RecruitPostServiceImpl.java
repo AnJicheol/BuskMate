@@ -91,4 +91,46 @@ public class RecruitPostServiceImpl implements RecruitPostService {
                 .createdAt(post.getCreatedAt())
                 .build();
     }
+
+    @Transactional
+    @Override
+    public RecruitPostStatusResponseDto close(String postId, String currentUserId){
+        RecruitPost post = recruitPostRepository.findByPostId(postId)
+                .orElseThrow(() -> new IllegalArgumentException("모집 글을 찾을 수 없습니다."));
+
+        if(post.getStatus() != RecruitPostStatus.OPEN){
+            throw new IllegalStateException("모집 중인 글만 마감할 수 있습니다.");
+        }
+
+        Band band=post.getBand();
+        if(!band.getLeaderId().equals(currentUserId)){
+            throw new AccessDeniedException("밴드장만 모집 글을 마감할 수 있습니다.");
+        }
+
+        post.close();
+
+        return RecruitPostStatusResponseDto.builder()
+                .postId(post.getPostId())
+                .status(post.getStatus())
+                .build();
+    }
+
+    @Transactional
+    @Override
+    public RecruitPostStatusResponseDto delete(String postId, String currentUserId){
+        RecruitPost post = recruitPostRepository.findByPostId(postId)
+                .orElseThrow(() -> new IllegalArgumentException("모집 글을 찾을 수 없습니다."));
+
+        Band band=post.getBand();
+        if(!band.getLeaderId().equals(currentUserId)){
+            throw new AccessDeniedException("밴드장만 모집 글을 삭제할 수 있습니다.");
+        }
+
+        post.delete();
+
+        return RecruitPostStatusResponseDto.builder()
+                .postId(post.getPostId())
+                .status(post.getStatus())
+                .build();
+    }
 }

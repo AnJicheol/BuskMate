@@ -37,4 +37,16 @@ public class RecruitPostController {
         return ResponseEntity.ok(
                 recruitPostService.update(postId, req, user.getUserId()));
     }
+    @PatchMapping("/{postId}/close")
+    public RecruitPostStatusResponseDto closeRecruitPost(@PathVariable String postId,@AuthenticationPrincipal CustomUser user){
+        return ResponseEntity.ok(
+                recruitPostService.close(postId, user.getUserId()));
+    }
+
+    @PatchMapping("/{postId}/delete")
+    public RecruitPostStatusResponseDto deleteRecruitPost(@PathVariable String postId, @AuthenticationPrincipal CustomUser user){
+        return ResponseEntity.ok(
+                recruitPostService.delete(postId, user.getUserId()));
+    }
+
 }

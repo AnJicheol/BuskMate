@@ -75,4 +75,5 @@ public class RecruitPost {
 
     public void close() { this.status = RecruitPostStatus.CLOSED; }
 
+    public void delete(){ this.status=RecruitPostStatus.DELETED;}
 }
