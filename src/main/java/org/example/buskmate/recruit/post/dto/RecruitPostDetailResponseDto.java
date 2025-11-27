@@ -18,4 +18,5 @@ public class RecruitPostDetailResponseDto {
     private RecruitPostStatus status;
     private LocalDateTime createdAt;
 
+    public RecruitPostDetailResponseDto() {}
 }

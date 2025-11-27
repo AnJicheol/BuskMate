@@ -6,6 +6,7 @@ import org.example.buskmate.recruit.post.dto.CreateRecruitPostResponseDto;
 import org.example.buskmate.recruit.post.dto.RecruitPostDetailResponseDto;
 import org.example.buskmate.recruit.post.service.RecruitPostService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,10 +15,9 @@ import org.springframework.web.bind.annotation.*;
 public class RecruitPostController {
     private final RecruitPostService recruitPostService;
     @PostMapping
-    public ResponseEntity<CreateRecruitPostResponseDto> createRecruitPost(@RequestBody CreateRecruitPostRequestDto req) {
-        String currentUserId = "USER";
+    public ResponseEntity<CreateRecruitPostResponseDto> createRecruitPost(@RequestBody CreateRecruitPostRequestDto req, @AuthenticationPrincipal CustomUser user) {
         return ResponseEntity.ok(
-                recruitPostService.create(req, currentUserId));
+                recruitPostService.create(req, user.getUserId()));
     }
 
     @GetMapping("/{postId}")

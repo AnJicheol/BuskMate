@@ -54,16 +54,8 @@ public class RecruitPostServiceImpl implements RecruitPostService {
     @Transactional(readOnly = true)
     @Override
     public RecruitPostDetailResponseDto getDetail(String postId){
-        RecruitPost post = recruitPostRepository.findByPostId(postId)
+        return recruitPostRepository.findDetail(postId)
                 .orElseThrow(() -> new IllegalArgumentException("모집 글을 찾을 수 없습니다."));
 
-        return RecruitPostDetailResponseDto.builder()
-                .postId(post.getPostId())
-                .bandId(post.getBand().getBandId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .status(post.getStatus())
-                .createdAt(post.getCreatedAt())
-                .build();
     }
 }
