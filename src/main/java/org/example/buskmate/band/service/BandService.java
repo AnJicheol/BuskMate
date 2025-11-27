@@ -1,9 +1,6 @@
 package org.example.buskmate.band.service;
 
-import org.example.buskmate.band.dto.BandCreateRequest;
-import org.example.buskmate.band.dto.BandCreateResponse;
-import org.example.buskmate.band.dto.BandDetailResponse;
-import org.example.buskmate.band.dto.BandListItemResponse;
+import org.example.buskmate.band.dto.*;
 
 import java.util.List;
 
@@ -13,4 +10,6 @@ public interface BandService {
 
     BandDetailResponse getByBandId(String bandId);
     List<BandListItemResponse> getAllBands();
+
+    BandDetailResponse updateBand(String bandId, UpdateBandRequest req);
 }
