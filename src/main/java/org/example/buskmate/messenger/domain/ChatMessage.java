@@ -22,9 +22,11 @@ public class ChatMessage {
     @Column(name = "uid", nullable = false, length = 26, unique = true)
     private String uid; // ULID
 
-    // 어떤 방의 메시지인지
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id", nullable = false)
+    @JoinColumn(
+            name = "room_id",
+            nullable = false
+    )
     private ChatRoom room;
 
     // 보낸 사람 (Users PK)

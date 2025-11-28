@@ -174,8 +174,8 @@ public class Band {
     @PrePersist
     private void fillBandIdIfNull() {
         if (this.bandId == null || this.bandId.isBlank()) {
-            // com.github.f4b6a3.ulid:ulid-creator 사용 (팀 공통)
-            this.bandId = com.github.f4b6a3.ulid.UlidCreator.getUlid().toString();
+
+            this.bandId = UlidCreator.getUlid().toString();
         }
     }
 }
