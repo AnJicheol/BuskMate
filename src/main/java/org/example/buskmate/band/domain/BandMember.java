@@ -17,12 +17,6 @@ import java.time.LocalDateTime;
                         name = "uk_band_member_band_user",
                         columnNames = {"band_id", "user_id"}
                 )
-        },
-        indexes = {
-                @Index(
-                        name = "idx_band_member_band_id",
-                        columnList = "band_id"
-                )
         }
 )
 @Entity
