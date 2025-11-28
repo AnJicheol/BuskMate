@@ -2,10 +2,7 @@ package org.example.buskmate.band.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.buskmate.band.dto.BandCreateRequest;
-import org.example.buskmate.band.dto.BandCreateResponse;
-import org.example.buskmate.band.dto.BandDetailResponse;
-import org.example.buskmate.band.dto.BandListItemResponse;
+import org.example.buskmate.band.dto.*;
 import org.example.buskmate.band.service.BandService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +32,14 @@ public class BandController {
     @GetMapping("/{bandId}")
     public ResponseEntity<BandDetailResponse> getById(@PathVariable String bandId) {
         return ResponseEntity.ok(bandService.getByBandId(bandId));
+    }
+
+    @PatchMapping("/{bandId}")
+    public ResponseEntity<BandDetailResponse> updateBand(
+            @PathVariable String bandId,
+            @RequestBody UpdateBandRequest request
+    ) {
+        BandDetailResponse response = bandService.updateBand(bandId, request);
+        return ResponseEntity.ok(response);
     }
 }

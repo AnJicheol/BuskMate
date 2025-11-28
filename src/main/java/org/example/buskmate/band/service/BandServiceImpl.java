@@ -2,11 +2,8 @@ package org.example.buskmate.band.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.buskmate.band.domain.Band;
-import org.example.buskmate.band.dto.BandDetailResponse;
-import org.example.buskmate.band.dto.BandListItemResponse;
+import org.example.buskmate.band.dto.*;
 import org.example.buskmate.band.repository.BandRepository;
-import org.example.buskmate.band.dto.BandCreateRequest;
-import org.example.buskmate.band.dto.BandCreateResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,4 +73,26 @@ public class BandServiceImpl implements BandService {
                         .build())
                 .toList();
     }
+
+    @Override
+    @Transactional
+    public BandDetailResponse updateBand(String bandId, UpdateBandRequest req) {
+
+        Band band = bandRepository.findByBandIdAndStatusActive(bandId);
+
+        if (band == null) {
+            throw new IllegalArgumentException(bandId);
+        }
+
+        band.updateInfo(req.getName(), req.getImageUrl());
+
+        return BandDetailResponse.builder()
+                .bandId(band.getBandId())
+                .name(band.getName())
+                .leaderId(band.getLeaderId())
+                .imageUrl(band.getImageUrl())
+                .createdAt(band.getCreatedAt().toString())
+                .build();
+    }
+
 }
