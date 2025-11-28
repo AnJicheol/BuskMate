@@ -1,4 +1,4 @@
-package org.example.buskmate.band.dto;
+package org.example.buskmate.band.dto.band;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

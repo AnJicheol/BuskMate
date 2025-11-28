@@ -1,4 +1,4 @@
-package org.example.buskmate.recruit.post.domain;
+package org.example.buskmate.band.domain;
 
 
 import jakarta.persistence.*;
@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.example.buskmate.band.domain.Band;
+
 import java.time.LocalDateTime;
 /**
  * 밴드 모집 게시글 엔티티를 나타냅니다.

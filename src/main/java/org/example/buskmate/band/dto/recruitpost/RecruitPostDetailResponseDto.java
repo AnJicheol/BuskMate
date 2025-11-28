@@ -1,10 +1,10 @@
-package org.example.buskmate.recruit.post.dto;
+package org.example.buskmate.band.dto.recruitpost;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.buskmate.recruit.post.domain.RecruitPostStatus;
+import org.example.buskmate.band.domain.RecruitPostStatus;
 
 import java.time.LocalDateTime;
 

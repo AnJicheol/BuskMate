@@ -1,4 +1,4 @@
-package org.example.buskmate.recruit.post.domain;
+package org.example.buskmate.band.domain;
 
 public enum RecruitPostStatus {
     OPEN,

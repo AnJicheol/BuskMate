@@ -1,11 +1,11 @@
-package org.example.buskmate.band.dto;
+package org.example.buskmate.band.dto.band;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class BandDetailResponse {
+public class BandCreateResponse {
 
     private String bandId;
     private String name;

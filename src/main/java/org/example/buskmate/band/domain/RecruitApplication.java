@@ -1,10 +1,9 @@
-package org.example.buskmate.recruit.application.domain;
+package org.example.buskmate.band.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.buskmate.recruit.post.domain.RecruitPost;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;

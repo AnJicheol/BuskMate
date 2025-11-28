@@ -1,9 +1,9 @@
-package org.example.buskmate.recruit.post.repository;
+package org.example.buskmate.band.repository;
 
-import org.example.buskmate.recruit.post.domain.RecruitPost;
-import org.example.buskmate.recruit.post.domain.RecruitPostStatus;
-import org.example.buskmate.recruit.post.dto.RecruitPostDetailResponseDto;
-import org.example.buskmate.recruit.post.dto.RecruitPostListDto;
+import org.example.buskmate.band.domain.RecruitPost;
+import org.example.buskmate.band.domain.RecruitPostStatus;
+import org.example.buskmate.band.dto.recruitpost.RecruitPostDetailResponseDto;
+import org.example.buskmate.band.dto.recruitpost.RecruitPostListDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

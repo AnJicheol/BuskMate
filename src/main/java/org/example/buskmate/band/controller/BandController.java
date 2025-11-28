@@ -2,7 +2,7 @@ package org.example.buskmate.band.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.buskmate.band.dto.*;
+import org.example.buskmate.band.dto.band.*;
 import org.example.buskmate.band.service.BandService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

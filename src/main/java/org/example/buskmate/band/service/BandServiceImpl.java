@@ -2,7 +2,7 @@ package org.example.buskmate.band.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.buskmate.band.domain.Band;
-import org.example.buskmate.band.dto.*;
+import org.example.buskmate.band.dto.band.*;
 import org.example.buskmate.band.repository.BandRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

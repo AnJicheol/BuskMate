@@ -1,7 +1,7 @@
-package org.example.buskmate.recruit.application.repository;
+package org.example.buskmate.band.repository;
 
-import org.example.buskmate.recruit.application.domain.RecruitApplication;
-import org.example.buskmate.recruit.application.domain.RecruitApplicationStatus;
+import org.example.buskmate.band.domain.RecruitApplication;
+import org.example.buskmate.band.domain.RecruitApplicationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

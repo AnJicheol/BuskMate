@@ -1,4 +1,4 @@
-package org.example.buskmate.recruit.application.domain;
+package org.example.buskmate.band.domain;
 
 public enum RecruitApplicationStatus {
     WAITING,

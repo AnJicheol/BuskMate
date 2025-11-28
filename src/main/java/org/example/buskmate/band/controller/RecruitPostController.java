@@ -1,8 +1,8 @@
-package org.example.buskmate.recruit.post.controller;
+package org.example.buskmate.band.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.buskmate.recruit.post.dto.*;
-import org.example.buskmate.recruit.post.service.RecruitPostService;
+import org.example.buskmate.band.dto.recruitpost.*;
+import org.example.buskmate.band.service.RecruitPostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +39,7 @@ public class RecruitPostController {
     }
 
     @PatchMapping("/{postId}/close")
-    public RecruitPostStatusResponseDto closeRecruitPost(@PathVariable String postId,@AuthenticationPrincipal CustomUser user){
+    public RecruitPostStatusResponseDto closeRecruitPost(@PathVariable String postId, @AuthenticationPrincipal CustomUser user){
         return ResponseEntity.ok(
                 recruitPostService.close(postId, user.getUserId()));
     }

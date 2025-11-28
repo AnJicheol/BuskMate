@@ -1,13 +1,13 @@
-package org.example.buskmate.recruit.post.service;
+package org.example.buskmate.band.service;
 
 import com.github.f4b6a3.ulid.UlidCreator;
 import lombok.RequiredArgsConstructor;
 import org.example.buskmate.band.domain.Band;
+import org.example.buskmate.band.dto.recruitpost.*;
 import org.example.buskmate.band.repository.BandRepository;
-import org.example.buskmate.recruit.post.domain.RecruitPost;
-import org.example.buskmate.recruit.post.domain.RecruitPostStatus;
-import org.example.buskmate.recruit.post.dto.*;
-import org.example.buskmate.recruit.post.repository.RecruitPostRepository;
+import org.example.buskmate.band.domain.RecruitPost;
+import org.example.buskmate.band.domain.RecruitPostStatus;
+import org.example.buskmate.band.repository.RecruitPostRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

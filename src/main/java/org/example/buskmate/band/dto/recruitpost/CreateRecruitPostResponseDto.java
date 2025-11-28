@@ -1,8 +1,7 @@
-package org.example.buskmate.recruit.post.dto;
+package org.example.buskmate.band.dto.recruitpost;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor

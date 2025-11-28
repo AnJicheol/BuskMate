@@ -1,6 +1,6 @@
 package org.example.buskmate.band.service;
 
-import org.example.buskmate.band.dto.*;
+import org.example.buskmate.band.dto.band.*;
 
 import java.util.List;
 

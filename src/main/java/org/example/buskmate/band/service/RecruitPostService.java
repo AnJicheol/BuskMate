@@ -1,6 +1,6 @@
-package org.example.buskmate.recruit.post.service;
+package org.example.buskmate.band.service;
 
-import org.example.buskmate.recruit.post.dto.*;
+import org.example.buskmate.band.dto.recruitpost.*;
 
 import java.util.List;
 
