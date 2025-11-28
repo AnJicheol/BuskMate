@@ -3,6 +3,7 @@ package org.example.buskmate.band.service;
 import lombok.RequiredArgsConstructor;
 import org.example.buskmate.band.domain.Band;
 import org.example.buskmate.band.domain.BandMember;
+import org.example.buskmate.band.domain.BandMemberRole;
 import org.example.buskmate.band.dto.BandMemberListItemResponse;
 import org.example.buskmate.band.repository.BandMemberRepository;
 import org.example.buskmate.band.repository.BandRepository;
@@ -32,5 +33,25 @@ public class BandMemberServiceImpl implements BandMemberService {
         return members.stream()
                 .map(BandMemberListItemResponse::from)
                 .toList();
+    }
+
+    @Override
+    @Transactional
+    public void inviteMember(String bandId, String userId) {
+        addMemberInternal(bandId, userId);
+    }
+
+    private void addMemberInternal(String bandId, String userId) {
+        Band band = bandRepository.findByBandIdAndStatusActive(bandId);
+        if (band == null) {
+            throw new IllegalArgumentException("해당 밴드가 존재하지 않습니다: " + bandId);
+        }
+
+        if (bandMemberRepository.existsByBand_BandIdAndUserId(bandId, userId)) {
+            throw new IllegalStateException("이미 이 밴드의 멤버입니다.");
+        }
+
+        BandMember member = BandMember.join(band, userId, BandMemberRole.MEMBER);
+        bandMemberRepository.save(member);
     }
 }

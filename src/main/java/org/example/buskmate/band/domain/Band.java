@@ -47,7 +47,7 @@ public class Band {
     @Column(nullable = false, length = 60)
     private String name;
 
-    @Column(name = "leader_id", nullable = false, length = 64)
+    @Column(name = "leader_id", nullable = false, length = 64, updatable = false)
     private String leaderId;
 
     @Column(name = "image_url", length = 512)

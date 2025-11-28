@@ -2,6 +2,7 @@ package org.example.buskmate.band.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.buskmate.band.dto.BandMemberListItemResponse;
+import org.example.buskmate.band.dto.band.BandMemberRegisterRequest;
 import org.example.buskmate.band.service.BandMemberService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,5 +22,14 @@ public class BandMemberController {
     ) {
         List<BandMemberListItemResponse> members = bandMemberService.getMembers(bandId);
         return ResponseEntity.ok(members);
+    }
+
+    @PostMapping("/{bandId}/members/invite")
+    public ResponseEntity<Void> inviteMember(
+            @PathVariable String bandId,
+            @RequestBody BandMemberRegisterRequest request
+    ) {
+        bandMemberService.inviteMember(bandId, request.getUserId());
+        return ResponseEntity.noContent().build();
     }
 }
