@@ -8,5 +8,7 @@ public interface RecruitApplicationService {
 
     void delete(String applicationId, String currentUserId);
 
+    void accept(String applicationId, String currentUserId);
 
+    void reject(String applicationId, String currentUserId);
 }

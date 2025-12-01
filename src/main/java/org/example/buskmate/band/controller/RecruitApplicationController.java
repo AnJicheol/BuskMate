@@ -26,4 +26,16 @@ public class RecruitApplicationController {
         recruitApplicationService.delete(applicationId, user.getUserId());
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{applicationId}/accept")
+    public ResponseEntity<Void> accept(@PathVariable String applicationId, @AuthenticationPrincipal CustomUser user){
+        recruitApplicationService.accept(applicationId, user.getUserId());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{applicationId}/reject")
+    public ResponseEntity<Void> reject(@PathVariable String applicationId, @AuthenticationPrincipal CustomUser user){
+        recruitApplicationService.reject(applicationId, user.getUserId());
+        return ResponseEntity.noContent().build();
+    }
 }
