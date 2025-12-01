@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface BandMemberRepository extends JpaRepository<BandMember, Long> {
 
-    List<BandMember> findAllByBand_BandId(String bandId);
+    List<BandMember> findAllByBand_BandIdAndStatus(String bandId, BandMemberStatus status);
 
     // 1. 이미 ACTIVE 멤버인지 체크
     boolean existsByBand_BandIdAndUserIdAndStatus(
@@ -19,15 +19,8 @@ public interface BandMemberRepository extends JpaRepository<BandMember, Long> {
     );
 
     // 2. 초대 대기(INVITED) 상태인 멤버 조회 (수락/거절할 때 사용)
-    Optional<BandMember> findByBand_BandIdAndUserIdAndStatus(
+    Optional<BandMember> findByBand_BandIdAndUserId(
             String bandId,
-            String userId,
-            BandMemberStatus status
-    );
-
-    // 3. 밴드의 현재 ACTIVE 멤버 목록 조회
-    List<BandMember> findAllByBand_BandIdAndStatus(
-            String bandId,
-            BandMemberStatus status
+            String userId
     );
 }

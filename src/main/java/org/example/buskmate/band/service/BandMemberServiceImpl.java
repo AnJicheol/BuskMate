@@ -29,13 +29,16 @@ public class BandMemberServiceImpl implements BandMemberService {
             throw new IllegalArgumentException("해당 밴드가 존재하지 않습니다: " + bandId);
         }
 
-        List<BandMember> members = bandMemberRepository.findAllByBand_BandId(bandId);
+        List<BandMember> members =
+                bandMemberRepository.findAllByBand_BandIdAndStatus(bandId, BandMemberStatus.ACTIVE);
 
         return members.stream()
                 .map(BandMemberListItemResponse::from)
                 .toList();
     }
 
+
+    @Override
     @Transactional
     public void inviteMember(String bandId, String leaderId, String targetUserId) {
         Band band = bandRepository.findByBandIdAndStatusActive(bandId);
@@ -62,20 +65,22 @@ public class BandMemberServiceImpl implements BandMemberService {
         bandMemberRepository.save(member);
     }
 
+    @Override
     @Transactional
     public void acceptInvitation(String bandId, String userId) {
         BandMember member = bandMemberRepository
-                .findByBand_BandIdAndUserIdAndStatus(bandId, userId, BandMemberStatus.INVITED)
-                .orElseThrow(() -> new IllegalArgumentException("초대 대기 상태가 아닙니다."));
+                .findByBand_BandIdAndUserId(bandId, userId)
+                .orElseThrow(() -> new IllegalArgumentException("멤버 정보를 찾을 수 없습니다."));
 
-        member.accept(); // status = ACTIVE 로 변경
+        member.accept();  // 여기서 INVITED 체크 + ACTIVE 전환
     }
 
+    @Override
     @Transactional
     public void rejectInvitation(String bandId, String userId) {
         BandMember member = bandMemberRepository
-                .findByBand_BandIdAndUserIdAndStatus(bandId, userId, BandMemberStatus.INVITED)
-                .orElseThrow(() -> new IllegalArgumentException("초대 대기 상태가 아닙니다."));
+                .findByBand_BandIdAndUserId(bandId, userId)
+                .orElseThrow(() -> new IllegalArgumentException("멤버 정보를 찾을 수 없습니다."));
 
         member.reject(); // status = REJECTED, 또는 여기서 delete() 해도 됨
     }
