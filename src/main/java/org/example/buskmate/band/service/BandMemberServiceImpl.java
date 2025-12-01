@@ -85,6 +85,4 @@ public class BandMemberServiceImpl implements BandMemberService {
         member.reject();
     }
 
-
-
 }
