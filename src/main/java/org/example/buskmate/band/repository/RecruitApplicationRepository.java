@@ -2,6 +2,8 @@ package org.example.buskmate.band.repository;
 
 import org.example.buskmate.band.domain.RecruitApplication;
 import org.example.buskmate.band.domain.RecruitApplicationStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,4 +16,6 @@ public interface RecruitApplicationRepository extends JpaRepository<RecruitAppli
     List<RecruitApplication> findAllByRecruitPost_PostIdAndStatus(String postId, RecruitApplicationStatus status);
 
     boolean existsByRecruitPost_PostIdAndApplicantId(String postId, String applicantId);
+
+    Page<RecruitApplication> findByRecruitPost_PostId(String postId, Pageable pageable);
 }

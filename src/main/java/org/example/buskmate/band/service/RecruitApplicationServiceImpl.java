@@ -3,12 +3,16 @@ package org.example.buskmate.band.service;
 import com.github.f4b6a3.ulid.UlidCreator;
 import lombok.RequiredArgsConstructor;
 import org.example.buskmate.band.domain.*;
+import org.example.buskmate.band.dto.recruitapplication.RecruitApplicationListItemDto;
 import org.example.buskmate.band.dto.recruitapplication.RecruitApplyResponseDto;
 import org.example.buskmate.band.repository.RecruitApplicationRepository;
 import org.example.buskmate.band.repository.RecruitPostRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -113,5 +117,28 @@ public class RecruitApplicationServiceImpl implements RecruitApplicationService 
         }
 
         application.reject();
+    }
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public Page<RecruitApplicationListItemDto> getApplications(String postId, String currentUserId, Pageable pageable){
+        RecruitPost post = recruitPostRepository.findByPostId(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 모집글을 찾을 수 없습니다."));
+
+        if(!post.getBand().getLeaderId().equals(currentUserId)){
+            throw new AccessDeniedException("밴드장만 지원자 목록을 조회할 수 있습니다.");
+        }
+        Page<RecruitApplication> page =
+                recruitApplicationRepository.findByRecruitPost_PostId(postId, pageable);
+
+        return page.map(app ->
+                RecruitApplicationListItemDto.builder()
+                        .applicationId(app.getApplicationId())
+                        .applicantId(app.getApplicantId())
+                        .status(app.getStatus())
+                        .appliedAt(app.getAppliedAt())
+                        .build()
+        );
     }
 }
