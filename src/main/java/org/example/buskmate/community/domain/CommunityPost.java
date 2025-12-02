@@ -28,6 +28,10 @@ public class CommunityPost {
     @Column(nullable = false, length = 16)
     private DeleteStatus isDeleted;
 
+    @Version
+    @Column(nullable = false)
+    private Long version;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
