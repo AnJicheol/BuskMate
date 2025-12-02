@@ -46,7 +46,7 @@ public class CommunityPostMediaServiceImpl implements  CommunityPostMediaService
 
         CommunityPostData saved = communityPostDataRepository.save(block);
         return saved.getId();
-        
+
     }
 
     @Override
