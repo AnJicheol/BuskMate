@@ -22,7 +22,7 @@ public class ChatMessage {
     private Long id;
 
     @Column(name = "message_id", nullable = false, length = 26, unique = true)
-    private String messageId; // ULID
+    private String messageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
