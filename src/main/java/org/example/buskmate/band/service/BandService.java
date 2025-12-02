@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BandService {
 
-    BandCreateResponse create(BandCreateRequest request);
+    BandCreateResponse create(BandCreateRequest request, String leaderId);
 
     BandDetailResponse getByBandId(String bandId);
     List<BandListItemResponse> getAllBands();

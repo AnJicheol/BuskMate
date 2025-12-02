@@ -17,9 +17,7 @@ public class BandServiceImpl implements BandService {
 
     @Override
     @Transactional
-    public BandCreateResponse create(BandCreateRequest request) {
-
-        String leaderId = request.getLeaderId();
+    public BandCreateResponse create(BandCreateRequest request, String leaderId) {
 
         // 엔티티 생성
         Band band = Band.create(
@@ -40,6 +38,7 @@ public class BandServiceImpl implements BandService {
                 .createdAt(band.getCreatedAt().toString())
                 .build();
     }
+
 
     @Override
     @Transactional(readOnly = true)

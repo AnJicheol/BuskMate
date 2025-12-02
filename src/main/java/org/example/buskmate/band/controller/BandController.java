@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.buskmate.band.dto.band.*;
 import org.example.buskmate.band.service.BandService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +19,11 @@ public class BandController {
 
     @PostMapping
     public ResponseEntity<BandCreateResponse> create(
-            @Valid @RequestBody BandCreateRequest request
+            @Valid @RequestBody BandCreateRequest request,
+            @AuthenticationPrincipal CustomUser user
     ) {
-        return ResponseEntity.ok(bandService.create(request));
+        BandCreateResponse response = bandService.create(request, user.getUserId());
+        return ResponseEntity.ok(response);
     }
 
 
