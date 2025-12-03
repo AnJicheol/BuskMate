@@ -28,6 +28,9 @@ public class CommunityPost {
     @Column(nullable = false, length = 16)
     private DeleteStatus isDeleted;
 
+    @Column(nullable = false)
+    private String content;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -36,14 +39,22 @@ public class CommunityPost {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Version
+    @Column(nullable = false)
+    private Long version;
+
     @Builder
     private CommunityPost(
             String title,
-            DeleteStatus isDeleted
+            String authorId,
+            DeleteStatus isDeleted,
+            String content
     )
     {
         this.title = title;
+        this.authorId = authorId;
         this.isDeleted = isDeleted;
+        this.content = content;
     }
 
     // 필요한 메서드만 열어두기
