@@ -1,7 +1,7 @@
 package org.example.buskmate.community.controller;
 
 import lombok.RequiredArgsConstructor;
-rpimport org.example.buskmate.community.dto.crud.request.*;
+import org.example.buskmate.community.dto.crud.request.*;
 import org.example.buskmate.community.dto.crud.response.ReadAllPostResponse;
 import org.example.buskmate.community.dto.crud.response.ReadPostResponse;
 import org.example.buskmate.community.service.CommunityPostService;
