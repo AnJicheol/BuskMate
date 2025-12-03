@@ -48,15 +48,18 @@ public class CommunityComment {
 
     @Builder
     private CommunityComment(
+            CommunityPost communityPost,
+            String authorId,
             String content,
             DeleteStatus isDeleted
-    )
-    {
+    ) {
+        this.communityPost = communityPost;
+        this.authorId = authorId;
         this.content = content;
         this.isDeleted = isDeleted;
     }
 
-    public void uploadComment(String content) {
+    public void updateComment(String content) {
         this.content = content;
     }
 

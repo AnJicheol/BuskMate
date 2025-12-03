@@ -25,14 +25,9 @@ public class CommunityPostDataHistory {
     @Column(name = "post_version", nullable = false)
     private Long postVersion;
 
-    @Column(nullable = false)
-    private String mediaType;
 
     @Column(nullable = false)
     private String content;
-
-    @Column(nullable = true)
-    private Integer sortOrder;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -42,24 +37,23 @@ public class CommunityPostDataHistory {
     private CommunityPostDataHistory(
             CommunityPost communityPost,
             Long postVersion,
-            String mediaType,
-            String content,
-            Integer sortOrder
+            String content
     ) {
         this.communityPost = communityPost;
         this.postVersion = postVersion;
-        this.mediaType = mediaType;
         this.content = content;
-        this.sortOrder = sortOrder;
     }
 
-    public static CommunityPostDataHistory from(CommunityPostData data, Long postVersion) {
+
+    public static CommunityPostDataHistory from(
+            CommunityPost post,
+            Long postVersion,
+            String content
+    ) {
         return CommunityPostDataHistory.builder()
-                .communityPost(data.getCommunityPost())
+                .communityPost(post)
                 .postVersion(postVersion)
-                .mediaType(data.getMediaType())
-                .content(data.getContent())
-                .sortOrder(data.getSortOrder())
+                .content(content)
                 .build();
     }
 }
