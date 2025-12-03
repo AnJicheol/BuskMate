@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 )
 @Getter
 @NoArgsConstructor
-public class member {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,7 +31,7 @@ public class member {
     @Column(name = "provider_user_id", nullable = false, length = 100)
     private String providerUserId;
 
-    public member(String userId, String name, String email, OAuthProvider provider, String providerUserId) {
+    public Users(String userId, String name, String email, OAuthProvider provider, String providerUserId) {
         this.userId = userId;
         this.name = name;
         this.email = email;
