@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 )
 @Entity
 public class BandMember {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -80,6 +79,5 @@ public class BandMember {
         }
         this.status = BandMemberStatus.KICKED;
     }
-
 
 }

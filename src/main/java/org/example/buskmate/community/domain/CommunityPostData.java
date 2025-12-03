@@ -34,19 +34,15 @@ public class CommunityPostData {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-
-
     @Builder
     private CommunityPostData(
             CommunityPost communityPost,
             String mediaType,
-            String content,
             Integer sortOrder
     )
     {
         this.communityPost = communityPost;
         this.mediaType = mediaType;
-        this.content = content;
         this.sortOrder = sortOrder;
     }
 
@@ -57,13 +53,10 @@ public class CommunityPostData {
     public void updateSortOrder(Integer sortOrder) {
         this.sortOrder = sortOrder;
     }
-    public void updateMediaType(String mediaType) {
-        this.mediaType = mediaType;
-    }
-
 }
 
 
 
 
 
+// 노션처럼 블럭단위로 정렬하면 중간에 이미지가 들어가건 맨 위에 뭐가 추가되건 상관이 없다

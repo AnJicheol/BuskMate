@@ -1,6 +1,7 @@
 package org.example.buskmate.band.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.buskmate.band.dto.CustomUser;
 import org.example.buskmate.band.dto.bandmember.BandMemberListItemResponse;
 import org.example.buskmate.band.dto.bandmember.BandMemberRegisterRequest;
 import org.example.buskmate.band.service.BandMemberService;
