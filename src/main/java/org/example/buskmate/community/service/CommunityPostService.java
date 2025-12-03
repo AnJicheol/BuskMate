@@ -5,7 +5,6 @@ import org.example.buskmate.community.dto.crud.request.DeletePostRequest;
 import org.example.buskmate.community.dto.crud.request.UpdatePostRequest;
 import org.example.buskmate.community.dto.crud.response.DeletePostResponse;
 import org.example.buskmate.community.dto.crud.response.PostIdResponse;
-import org.example.buskmate.community.dto.crud.response.UpdatePostResponse;
 
 public interface CommunityPostService {
 
@@ -13,7 +12,7 @@ public interface CommunityPostService {
 
     PostIdResponse getPostById(String id);
 
-    UpdatePostResponse updatePost(UpdatePostRequest request);
+    void updatePost(Integer id, UpdatePostRequest request);
 
     DeletePostResponse deletePost(DeletePostRequest request);
 }

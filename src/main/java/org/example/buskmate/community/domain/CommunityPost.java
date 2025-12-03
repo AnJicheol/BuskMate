@@ -59,18 +59,19 @@ public class CommunityPost {
 
     // 필요한 메서드만 열어두기
     public static CommunityPost createPost(String title, String authorId, String content) {
-        CommunityPost post = CommunityPost.builder()
+        CommunityPost createPost = CommunityPost.builder()
                 .title(title)
                 .authorId(authorId)
                 .content(content)
                 .build();
 
-        post.isDeleted = DeleteStatus.ACTIVE;
-        return post;
+        createPost.isDeleted = DeleteStatus.ACTIVE;
+        return createPost;
     }
 
-    public void updatePost(String title) {
+    public void updatePost(String title, String content) {
         this.title = title;
+        this.content = content;
     }
 
     public void softDelete(){

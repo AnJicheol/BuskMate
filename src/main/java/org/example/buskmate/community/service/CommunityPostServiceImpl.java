@@ -7,7 +7,6 @@ import org.example.buskmate.community.dto.crud.request.DeletePostRequest;
 import org.example.buskmate.community.dto.crud.request.UpdatePostRequest;
 import org.example.buskmate.community.dto.crud.response.DeletePostResponse;
 import org.example.buskmate.community.dto.crud.response.PostIdResponse;
-import org.example.buskmate.community.dto.crud.response.UpdatePostResponse;
 import org.example.buskmate.community.repository.CommunityPostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +30,13 @@ public class CommunityPostServiceImpl implements CommunityPostService {
         return null;
     }
 
-    public UpdatePostResponse updatePost(UpdatePostRequest request){
-        return null;
+    @Transactional
+    public void updatePost(Integer id, UpdatePostRequest request){
+        CommunityPost post = communityPostRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
+
+        post.updatePost(request.title(), request.content());
+        communityPostRepo.save(post);
     }
 
     public DeletePostResponse deletePost(DeletePostRequest request){

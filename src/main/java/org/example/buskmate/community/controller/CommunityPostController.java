@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.buskmate.community.dto.crud.request.CreatePostRequest;
 import org.example.buskmate.community.dto.crud.request.UpdatePostRequest;
 import org.example.buskmate.community.dto.crud.response.PostIdResponse;
-import org.example.buskmate.community.dto.crud.response.UpdatePostResponse;
 import org.example.buskmate.community.service.CommunityPostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +28,9 @@ public class CommunityPostController {
     }
 
     @PatchMapping("/posts/{id}")
-    public UpdatePostResponse updatePost(@PathVariable String id, @RequestBody UpdatePostRequest request){
-        return null;
+    public ResponseEntity<Void> updatePost(@PathVariable Integer id, @RequestBody UpdatePostRequest request){
+        communityPostService.updatePost(id, request);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/posts/{id}")
