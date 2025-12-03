@@ -2,6 +2,7 @@ package org.example.buskmate.band.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.buskmate.band.domain.Band;
+import org.example.buskmate.band.domain.BandStatus;
 import org.example.buskmate.band.dto.band.*;
 import org.example.buskmate.band.repository.BandRepository;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class BandServiceImpl implements BandService {
     @Transactional(readOnly = true)
     public BandDetailResponse getByBandId(String bandId) {
 
-        Band band = bandRepository.findByBandIdAndStatusActive(bandId);
+        Band band = bandRepository.findByBandIdAndStatus(bandId, BandStatus.ACTIVE);
 
         if (band == null) {
             throw new IllegalArgumentException("해당 밴드가 존재하지 않습니다: " + bandId);
@@ -63,7 +64,7 @@ public class BandServiceImpl implements BandService {
     @Transactional(readOnly = true)
     public List<BandListItemResponse> getAllBands() {
 
-        return bandRepository.findAllByStatusActive()
+        return bandRepository.findAllByStatus(BandStatus.ACTIVE)
                 .stream()
                 .map(band -> BandListItemResponse.builder()
                         .bandId(band.getBandId())
@@ -77,7 +78,7 @@ public class BandServiceImpl implements BandService {
     @Transactional
     public BandDetailResponse updateBand(String bandId, UpdateBandRequest req) {
 
-        Band band = bandRepository.findByBandIdAndStatusActive(bandId);
+        Band band = bandRepository.findByBandIdAndStatus(bandId, BandStatus.ACTIVE);
 
         if (band == null) {
             throw new IllegalArgumentException(bandId);
@@ -98,7 +99,7 @@ public class BandServiceImpl implements BandService {
     @Transactional
     public void deactivate(String bandId) {
 
-        Band band = bandRepository.findByBandIdAndStatusActive(bandId);
+        Band band = bandRepository.findByBandIdAndStatus(bandId, BandStatus.ACTIVE);
 
         if (band == null) {
             throw new IllegalArgumentException("해당 밴드가 존재하지 않습니다: " + bandId);

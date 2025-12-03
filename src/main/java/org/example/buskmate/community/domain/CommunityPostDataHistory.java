@@ -6,16 +6,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Table(name = "community_comment")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class CommunityComment {
-
+@Getter
+@Table(name = "community_post_data_history")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class CommunityPostDataHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,46 +22,38 @@ public class CommunityComment {
     @JoinColumn(name = "community_post_id", nullable = false)
     private CommunityPost communityPost;
 
-    @Column(nullable = false)
-    private String authorId;
+    @Column(name = "post_version", nullable = false)
+    private Long postVersion;
+
 
     @Column(nullable = false)
     private String content;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 16)
-    private DeleteStatus isDeleted;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "update_at", nullable = false)
-    private LocalDateTime updatedAt;
-
-    @Version
-    @Column(nullable = false)
-    private Long version;
-
     @Builder
-    private CommunityComment(
+    private CommunityPostDataHistory(
             CommunityPost communityPost,
-            String authorId,
-            String content,
-            DeleteStatus isDeleted
+            Long postVersion,
+            String content
     ) {
         this.communityPost = communityPost;
-        this.authorId = authorId;
-        this.content = content;
-        this.isDeleted = isDeleted;
-    }
-
-    public void updateComment(String content) {
+        this.postVersion = postVersion;
         this.content = content;
     }
 
-    public void softDelete() {
-        this.isDeleted = DeleteStatus.DELETED;
+
+    public static CommunityPostDataHistory from(
+            CommunityPost post,
+            Long postVersion,
+            String content
+    ) {
+        return CommunityPostDataHistory.builder()
+                .communityPost(post)
+                .postVersion(postVersion)
+                .content(content)
+                .build();
     }
 }
