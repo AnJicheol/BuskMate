@@ -1,18 +1,20 @@
 package org.example.buskmate.community.service;
 
-import org.example.buskmate.community.dto.crud.request.CreatePostRequest;
-import org.example.buskmate.community.dto.crud.request.DeletePostRequest;
-import org.example.buskmate.community.dto.crud.request.UpdatePostRequest;
-import org.example.buskmate.community.dto.crud.response.DeletePostResponse;
-import org.example.buskmate.community.dto.crud.response.PostIdResponse;
+import org.example.buskmate.community.dto.crud.request.*;
+import org.example.buskmate.community.dto.crud.response.ReadAllPostResponse;
+import org.example.buskmate.community.dto.crud.response.ReadPostResponse;
+
+import java.util.List;
 
 public interface CommunityPostService {
 
     void createPost(CreatePostRequest request);
 
-    PostIdResponse getPostById(String id);
+    List<ReadAllPostResponse> getAllPost(ReadAllPostRequest request);
+
+    ReadPostResponse getPostId(Integer id, ReadPostRequest request);
 
     void updatePost(Integer id, UpdatePostRequest request);
 
-    DeletePostResponse deletePost(DeletePostRequest request);
+    void deletePost(Integer id, DeletePostRequest request);
 }

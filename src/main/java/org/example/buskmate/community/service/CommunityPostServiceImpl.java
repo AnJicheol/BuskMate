@@ -2,14 +2,15 @@ package org.example.buskmate.community.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.buskmate.community.domain.CommunityPost;
-import org.example.buskmate.community.dto.crud.request.CreatePostRequest;
-import org.example.buskmate.community.dto.crud.request.DeletePostRequest;
-import org.example.buskmate.community.dto.crud.request.UpdatePostRequest;
-import org.example.buskmate.community.dto.crud.response.DeletePostResponse;
-import org.example.buskmate.community.dto.crud.response.PostIdResponse;
+import org.example.buskmate.community.dto.crud.request.*;
+import org.example.buskmate.community.dto.crud.response.ReadAllPostResponse;
+import org.example.buskmate.community.dto.crud.response.ReadPostResponse;
 import org.example.buskmate.community.repository.CommunityPostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CommunityPostServiceImpl implements CommunityPostService {
@@ -26,8 +27,18 @@ public class CommunityPostServiceImpl implements CommunityPostService {
         communityPostRepo.save(post);
     }
 
-    public PostIdResponse getPostById(String id){
-        return null;
+    public List<ReadAllPostResponse> getAllPost(ReadAllPostRequest request){
+        return communityPostRepo.findAll()
+                .stream()
+                .map(ReadAllPostResponse :: of)
+                .toList();
+    }
+
+    public ReadPostResponse getPostId(Integer id, ReadPostRequest request){
+        CommunityPost post = communityPostRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
+
+        return ReadPostResponse.of(post);
     }
 
     @Transactional
@@ -39,7 +50,11 @@ public class CommunityPostServiceImpl implements CommunityPostService {
         communityPostRepo.save(post);
     }
 
-    public DeletePostResponse deletePost(DeletePostRequest request){
-        return null;
+
+    public void deletePost(Integer id, DeletePostRequest request){
+        CommunityPost post = communityPostRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
+
+        post.softDelete();
     }
 }
