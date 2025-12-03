@@ -1,8 +1,7 @@
 package org.example.buskmate.community.dto.crud.request;
 
-import org.example.buskmate.community.domain.CommunityPost;
-
 public record CreatePostRequest(
+        String title,
         String authorId,
-        String title
+        String content
 ) { }

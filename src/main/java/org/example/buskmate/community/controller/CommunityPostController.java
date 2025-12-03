@@ -2,13 +2,10 @@ package org.example.buskmate.community.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.buskmate.community.dto.crud.request.CreatePostRequest;
-import org.example.buskmate.community.dto.crud.request.DeletePostRequest;
 import org.example.buskmate.community.dto.crud.request.UpdatePostRequest;
-import org.example.buskmate.community.dto.crud.response.CreatePostResponse;
 import org.example.buskmate.community.dto.crud.response.PostIdResponse;
 import org.example.buskmate.community.dto.crud.response.UpdatePostResponse;
 import org.example.buskmate.community.service.CommunityPostService;
-import org.example.buskmate.community.service.CommunityPostServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +18,9 @@ public class CommunityPostController {
     private final CommunityPostService communityPostService;
 
     @PostMapping("/posts")
-    public CreatePostResponse createPost(@RequestBody CreatePostRequest request){
-        return null;
+    public ResponseEntity<Void> createPost(@RequestBody CreatePostRequest request){
+        communityPostService.createPost(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/posts/{id}")

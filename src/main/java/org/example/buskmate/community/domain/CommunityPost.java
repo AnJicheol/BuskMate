@@ -47,17 +47,28 @@ public class CommunityPost {
     private CommunityPost(
             String title,
             String authorId,
-            DeleteStatus isDeleted,
-            String content
+            String content,
+            DeleteStatus isDeleted
     )
     {
         this.title = title;
         this.authorId = authorId;
-        this.isDeleted = isDeleted;
         this.content = content;
+        this.isDeleted = isDeleted;
     }
 
     // 필요한 메서드만 열어두기
+    public static CommunityPost createPost(String title, String authorId, String content) {
+        CommunityPost post = CommunityPost.builder()
+                .title(title)
+                .authorId(authorId)
+                .content(content)
+                .build();
+
+        post.isDeleted = DeleteStatus.ACTIVE;
+        return post;
+    }
+
     public void updatePost(String title) {
         this.title = title;
     }

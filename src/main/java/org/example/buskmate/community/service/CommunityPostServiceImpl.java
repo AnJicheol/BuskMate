@@ -1,24 +1,30 @@
 package org.example.buskmate.community.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.buskmate.community.domain.CommunityPost;
 import org.example.buskmate.community.dto.crud.request.CreatePostRequest;
 import org.example.buskmate.community.dto.crud.request.DeletePostRequest;
 import org.example.buskmate.community.dto.crud.request.UpdatePostRequest;
-import org.example.buskmate.community.dto.crud.response.CreatePostResponse;
 import org.example.buskmate.community.dto.crud.response.DeletePostResponse;
 import org.example.buskmate.community.dto.crud.response.PostIdResponse;
 import org.example.buskmate.community.dto.crud.response.UpdatePostResponse;
 import org.example.buskmate.community.repository.CommunityPostRepository;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class CommunityPostServiceImpl implements CommunityPostService {
 
     private final CommunityPostRepository communityPostRepo;
 
-    public CreatePostResponse createPost(CreatePostRequest request){
-        return null;
+    @Transactional
+    public void createPost(CreatePostRequest request){
+        CommunityPost post = CommunityPost.createPost(
+                request.title(),
+                request.authorId(),
+                request.content()
+        );
+        communityPostRepo.save(post);
     }
 
     public PostIdResponse getPostById(String id){
