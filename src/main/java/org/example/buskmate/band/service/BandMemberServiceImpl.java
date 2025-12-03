@@ -1,10 +1,7 @@
 package org.example.buskmate.band.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.buskmate.band.domain.Band;
-import org.example.buskmate.band.domain.BandMember;
-import org.example.buskmate.band.domain.BandMemberRole;
-import org.example.buskmate.band.domain.BandMemberStatus;
+import org.example.buskmate.band.domain.*;
 import org.example.buskmate.band.dto.bandmember.BandMemberListItemResponse;
 import org.example.buskmate.band.repository.BandMemberRepository;
 import org.example.buskmate.band.repository.BandRepository;
@@ -24,7 +21,7 @@ public class BandMemberServiceImpl implements BandMemberService {
     @Override
     public List<BandMemberListItemResponse> getMembers(String bandId) {
 
-        Band band = bandRepository.findByBandIdAndStatusActive(bandId);
+        Band band = bandRepository.findByBandIdAndStatus(bandId, BandStatus.ACTIVE);
         if (band == null) {
             throw new IllegalArgumentException("해당 밴드가 존재하지 않습니다: " + bandId);
         }
@@ -41,7 +38,7 @@ public class BandMemberServiceImpl implements BandMemberService {
     @Override
     @Transactional
     public void inviteMember(String bandId, String leaderId, String targetUserId) {
-        Band band = bandRepository.findByBandIdAndStatusActive(bandId);
+        Band band = bandRepository.findByBandIdAndStatus(bandId, BandStatus.ACTIVE);
         if (band == null) {
             throw new IllegalArgumentException("해당 밴드가 존재하지 않습니다: " + bandId);
         }
@@ -106,7 +103,7 @@ public class BandMemberServiceImpl implements BandMemberService {
     @Transactional
     public void kickMember(String bandId, String leaderId, String targetUserId) {
 
-        Band band = bandRepository.findByBandIdAndStatusActive(bandId);
+        Band band = bandRepository.findByBandIdAndStatus(bandId, BandStatus.ACTIVE);
         if (band == null) {
             throw new IllegalArgumentException("해당 밴드가 존재하지 않습니다: " + bandId);
         }

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.example.buskmate.band.dto.CustomUser;
 import org.example.buskmate.band.dto.recruitapplication.RecruitApplicationListItemDto;
 import org.example.buskmate.band.dto.recruitapplication.RecruitApplyResponseDto;
 import org.example.buskmate.band.service.RecruitApplicationService;

@@ -35,7 +35,7 @@ public interface BandRepository extends JpaRepository<Band, Long> {
      * @see Band#getBandId()
      * @see BandStatus#ACTIVE
      */
-    Band findByBandIdAndStatusActive(String bandId);
+    Band findByBandIdAndStatus(String bandId, BandStatus status);
 
     /**
      * 활성 상태(ACTIVE)인 모든 밴드 목록을 조회합니다.
@@ -43,5 +43,5 @@ public interface BandRepository extends JpaRepository<Band, Long> {
      * @return 활성 상태의 모든 밴드 목록. 없을 경우 빈 리스트 반환
      * @see BandStatus#ACTIVE
      */
-    List<Band> findAllByStatusActive();
+    List<Band> findAllByStatus(BandStatus status);
 }
