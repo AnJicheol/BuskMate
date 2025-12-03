@@ -31,6 +31,9 @@ public class CommunityPost {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private int viewCount;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -48,12 +51,14 @@ public class CommunityPost {
             String title,
             String authorId,
             String content,
+            int viewCount,
             DeleteStatus isDeleted
     )
     {
         this.title = title;
         this.authorId = authorId;
         this.content = content;
+        this.viewCount = viewCount;
         this.isDeleted = isDeleted;
     }
 

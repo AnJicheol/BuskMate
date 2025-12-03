@@ -4,13 +4,15 @@ import org.example.buskmate.community.domain.CommunityPost;
 
 public record ReadAllPostResponse(
         String authorId,
-        String title
+        String title,
+        int commentCount
 )
 {
-    public static ReadAllPostResponse of(CommunityPost c){
+    public static ReadAllPostResponse of(CommunityPost c, int commentCount){
         return new ReadAllPostResponse(
                 c.getAuthorId(),
-                c.getTitle()
+                c.getTitle(),
+                commentCount
         );
     }
 }
