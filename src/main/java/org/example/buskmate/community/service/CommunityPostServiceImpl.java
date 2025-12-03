@@ -22,6 +22,7 @@ import java.util.List;
 public class CommunityPostServiceImpl implements CommunityPostService {
 
     private final CommunityPostRepository communityPostRepo;
+    private final CommunityComment communityComment;
 
     // 1. 게시글 생성
     @Transactional
@@ -38,15 +39,22 @@ public class CommunityPostServiceImpl implements CommunityPostService {
         Sort sort = request.desc() ? Sort.by(request.sortBy()).descending()
                                     : Sort.by(request.sortBy()).ascending();
         Pageable pageable = PageRequest.of(request.page(), request.size(), sort);
+
         return communityPostRepo.findByIsDeleted(DeleteStatus.ACTIVE, pageable)
-                .map(ReadAllPostResponse :: of);
-        communityPostRepo.countById;
+                .map(post -> {
+                    long commentCount = commentRepository.countByCoummunityPostId(post.getId());
+                    return new ReadAllPostResponse(
+                            post.getAuthorId(),
+                            post.getTitle(),
+                            post.getViewCount()
+                    );
+                });
     }
     // 3. 특정 게시글 조회
     public ReadPostResponse getPostId(Integer id, ReadPostRequest request){
         CommunityPost post = communityPostRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
-        post.setViewCount(post.getViewCount() + 1);
+//        post.setViewCount(post.getViewCount() + 1);
         return ReadPostResponse.of(post);
     }
     // 4. 게시글 수정
