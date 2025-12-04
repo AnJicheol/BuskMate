@@ -3,7 +3,6 @@ package org.example.buskmate.community.dto.post.crud.response;
 import org.example.buskmate.community.domain.CommunityComment;
 import org.example.buskmate.community.domain.CommunityPost;
 import org.example.buskmate.community.dto.CommunityCommentResponseDto;
-import org.example.buskmate.community.repository.CommunityCommentRepository;
 
 import java.util.List;
 
