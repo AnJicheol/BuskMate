@@ -12,4 +12,5 @@ public interface CommunityPostDataHistoryRepository extends JpaRepository<Commun
     // 특정 게시글의 히스토리 목록
     List<CommunityPostDataHistory> findByCommunityPostIdOrderByCreatedAtDesc(Long communityPostId);
 
+
 }
