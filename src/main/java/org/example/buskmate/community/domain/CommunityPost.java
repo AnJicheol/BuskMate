@@ -32,7 +32,7 @@ public class CommunityPost {
     private String content;
 
     @Column(nullable = false)
-    private int viewCount;
+    private long viewCount;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -51,7 +51,7 @@ public class CommunityPost {
             String title,
             String authorId,
             String content,
-            int viewCount,
+            long viewCount,
             DeleteStatus isDeleted
     )
     {
@@ -81,5 +81,9 @@ public class CommunityPost {
 
     public void softDelete(){
         this.isDeleted = DeleteStatus.DELETED;
+    }
+
+    public void increaseViewCount() {
+        this.viewCount += 1;
     }
 }
