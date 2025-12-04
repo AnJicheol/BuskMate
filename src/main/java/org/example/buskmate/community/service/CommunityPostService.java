@@ -1,21 +1,19 @@
 package org.example.buskmate.community.service;
 
-import org.example.buskmate.community.dto.crud.request.*;
-import org.example.buskmate.community.dto.crud.response.ReadAllPostResponse;
-import org.example.buskmate.community.dto.crud.response.ReadPostResponse;
+import org.example.buskmate.community.dto.post.crud.request.*;
+import org.example.buskmate.community.dto.post.crud.response.CommunityPostReadAllPostResponse;
+import org.example.buskmate.community.dto.post.crud.response.CommunityPostReadPostResponse;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface CommunityPostService {
 
-    void createPost(CreatePostRequest request);
+    void createPost(CommunityPostCreatePostRequest request);
 
-    Page<ReadAllPostResponse> getAllPost(ReadAllPostRequest request);
+    Page<CommunityPostReadAllPostResponse> getAllPost(CommunityPostReadAllPostRequest request);
 
-    ReadPostResponse getPostId(Integer id, ReadPostRequest request);
+    CommunityPostReadPostResponse getPostId(Integer id, CommunityPostReadPostRequest request);
 
-    void updatePost(Integer id, UpdatePostRequest request);
+    void updatePost(Integer id, CommunityPostUpdatePostRequest request);
 
-    void deletePost(Integer id, DeletePostRequest request);
+    void deletePost(Integer id, CommunityPostDeletePostRequest request);
 }

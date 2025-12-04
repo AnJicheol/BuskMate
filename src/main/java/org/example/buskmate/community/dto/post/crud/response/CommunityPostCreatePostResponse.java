@@ -1,18 +1,17 @@
-package org.example.buskmate.community.dto.crud.response;
+package org.example.buskmate.community.dto.post.crud.response;
 
 import org.example.buskmate.community.domain.CommunityPost;
-import org.example.buskmate.community.dto.crud.request.CreatePostRequest;
 
 import java.time.LocalDateTime;
 
-public record CreatePostResponse(
+public record CommunityPostCreatePostResponse(
         String authorId,
         Long id,
         String title,
         LocalDateTime createdAt
 ) {
-    public static CreatePostResponse of(CommunityPost c){
-        return new CreatePostResponse(
+    public static CommunityPostCreatePostResponse of(CommunityPost c){
+        return new CommunityPostCreatePostResponse(
                 c.getAuthorId(),
                 c.getId(),
                 c.getTitle(),

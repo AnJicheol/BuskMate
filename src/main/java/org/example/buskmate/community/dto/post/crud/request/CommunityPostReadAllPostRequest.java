@@ -1,7 +1,7 @@
-package org.example.buskmate.community.dto.crud.request;
+package org.example.buskmate.community.dto.post.crud.request;
 
 
-public record ReadAllPostRequest(
+public record CommunityPostReadAllPostRequest(
         String authorId,
         String title,
         int page,
