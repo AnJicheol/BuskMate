@@ -56,7 +56,7 @@ public class CommunityPostServiceImpl implements CommunityPostService {
     }
     // 3. 특정 게시글 조회
     @Transactional
-    public CommunityPostReadPostResponse getPostId(Integer id, CommunityPostReadPostRequest request){
+    public CommunityPostReadPostResponse getPostId(Long id, CommunityPostReadPostRequest request){
         CommunityPost post = communityPostRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
         post.increaseViewCount(); // 조회수 증가
@@ -70,7 +70,7 @@ public class CommunityPostServiceImpl implements CommunityPostService {
     }
     // 4. 게시글 수정
     @Transactional
-    public void updatePost(Integer id, CommunityPostUpdatePostRequest request){
+    public void updatePost(Long id, CommunityPostUpdatePostRequest request){
         CommunityPost post = communityPostRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
 
@@ -79,7 +79,7 @@ public class CommunityPostServiceImpl implements CommunityPostService {
     }
 
     // 5. 게시글 삭제
-    public void deletePost(Integer id, CommunityPostDeletePostRequest request){
+    public void deletePost(Long id, CommunityPostDeletePostRequest request){
         CommunityPost post = communityPostRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
 

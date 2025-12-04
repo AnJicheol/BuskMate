@@ -45,19 +45,19 @@ public class CommunityPostController {
     }
     // 3. 특정 게시글 조회
     @GetMapping("/posts/{id}")
-    public ResponseEntity<CommunityPostReadPostResponse> getPostId(@PathVariable Integer id, @RequestBody CommunityPostReadPostRequest request){
+    public ResponseEntity<CommunityPostReadPostResponse> getPostId(@PathVariable Long id, @RequestBody CommunityPostReadPostRequest request){
         communityPostService.getPostId(id, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
     // 4. 게시글 수정
     @PatchMapping("/posts/{id}")
-    public ResponseEntity<Void> updatePost(@PathVariable Integer id, @RequestBody CommunityPostUpdatePostRequest request){
+    public ResponseEntity<Void> updatePost(@PathVariable Long id, @RequestBody CommunityPostUpdatePostRequest request){
         communityPostService.updatePost(id, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
     // 5. 게시글 삭제
     @DeleteMapping("/posts/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Integer id, @RequestBody CommunityPostDeletePostRequest request){
+    public ResponseEntity<Void> deletePost(@PathVariable Long id, @RequestBody CommunityPostDeletePostRequest request){
         communityPostService.deletePost(id, request);
         return ResponseEntity.noContent().build();
     }

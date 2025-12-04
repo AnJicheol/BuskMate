@@ -11,9 +11,9 @@ public interface CommunityPostService {
 
     Page<CommunityPostReadAllPostResponse> getAllPost(CommunityPostReadAllPostRequest request);
 
-    CommunityPostReadPostResponse getPostId(Integer id, CommunityPostReadPostRequest request);
+    CommunityPostReadPostResponse getPostId(Long id, CommunityPostReadPostRequest request);
 
-    void updatePost(Integer id, CommunityPostUpdatePostRequest request);
+    void updatePost(Long id, CommunityPostUpdatePostRequest request);
 
-    void deletePost(Integer id, CommunityPostDeletePostRequest request);
+    void deletePost(Long id, CommunityPostDeletePostRequest request);
 }
