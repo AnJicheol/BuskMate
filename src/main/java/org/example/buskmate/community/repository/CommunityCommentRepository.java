@@ -17,4 +17,7 @@ public interface CommunityCommentRepository extends JpaRepository<CommunityComme
             DeleteStatus isDeleted
     );
 
+    // 특정 게시글의 모든 댓글 조회하기
+    long countByCommunityPostId(Long postId);
+
 }
