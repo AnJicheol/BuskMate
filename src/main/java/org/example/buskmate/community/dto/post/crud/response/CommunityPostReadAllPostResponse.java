@@ -2,21 +2,30 @@ package org.example.buskmate.community.dto.post.crud.response;
 
 import org.example.buskmate.community.domain.CommunityPost;
 
+import java.time.LocalDateTime;
+
 public record CommunityPostReadAllPostResponse(
+        Long postId,
         String authorId,
         String title,
-        String content,
-        long viewCount,
-        long commentCount
+        Long viewCount,
+        LocalDateTime displayTime,
+        Long chatCount
 )
 {
-    public static CommunityPostReadAllPostResponse of(CommunityPost c, int commentCount){
+    public static CommunityPostReadAllPostResponse of(
+            CommunityPost c,
+            Long viewCount,
+            LocalDateTime displayTime,
+            Long chatCount
+    ){
         return new CommunityPostReadAllPostResponse(
+                c.getId(),
                 c.getAuthorId(),
                 c.getTitle(),
-                c.getContent(),
-                c.getViewCount(),
-                commentCount
+                viewCount,
+                displayTime,
+                chatCount
         );
     }
 }

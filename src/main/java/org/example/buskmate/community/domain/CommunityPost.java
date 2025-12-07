@@ -18,7 +18,7 @@ public class CommunityPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String authorId;
 
     @Column(nullable = false)
@@ -31,15 +31,12 @@ public class CommunityPost {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private long viewCount;
-
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at", nullable = true)
     private LocalDateTime updatedAt;
 
     @Version
@@ -51,14 +48,12 @@ public class CommunityPost {
             String title,
             String authorId,
             String content,
-            long viewCount,
             DeleteStatus isDeleted
     )
     {
         this.title = title;
         this.authorId = authorId;
         this.content = content;
-        this.viewCount = viewCount;
         this.isDeleted = isDeleted;
     }
 
@@ -83,7 +78,4 @@ public class CommunityPost {
         this.isDeleted = DeleteStatus.DELETED;
     }
 
-    public void increaseViewCount() {
-        this.viewCount += 1;
-    }
 }

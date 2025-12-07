@@ -14,7 +14,7 @@ public interface CommunityPostRepository extends JpaRepository<CommunityPost,Lon
     @Query("""
             select cp
             from CommunityPost cp
-            where cp.isDeleted = :isDeleted
+            where cp.isDeleted = :ACTIVE
             """)
     Page<CommunityPost> findByIsDeleted(DeleteStatus isDeleted, Pageable page);
 }

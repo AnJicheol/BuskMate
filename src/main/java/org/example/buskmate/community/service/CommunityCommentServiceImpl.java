@@ -73,4 +73,10 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
         comment.softDelete();
 
     }
+
+    // Post당 댓글 수 조회
+    @Transactional(readOnly =true)
+    public Long countByCommunityPostId(Long postId) {
+        return commentRepository.countByCommunityPostIdAndIsDeleted(postId, DeleteStatus.ACTIVE);
+    }
 }
