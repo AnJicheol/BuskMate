@@ -69,6 +69,7 @@ public class CommunityPost {
         return createPost;
     }
 
+    // 본문 수정 시 호출
     public void updatePost(String title, String content) {
         this.title = title;
         this.content = content;
