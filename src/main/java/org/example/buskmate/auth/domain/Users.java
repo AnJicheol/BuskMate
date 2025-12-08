@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(
-        name = "members"
+        name = "users"
 )
 @Getter
 @NoArgsConstructor
@@ -31,11 +31,16 @@ public class Users {
     @Column(name = "provider_user_id", nullable = false, length = 100)
     private String providerUserId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, length = 20)
+    private UserRole role;
+
     public Users(String userId, String name, String email, OAuthProvider provider, String providerUserId) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.provider = provider;
         this.providerUserId = providerUserId;
+        this.role = UserRole.MEMBER;
     }
 }

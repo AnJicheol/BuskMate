@@ -42,6 +42,7 @@ public class RecruitPostController {
         return ResponseEntity.ok(
                 recruitPostService.create(req, user.getUserId()));
     }
+
     @Operation(
             summary = "모집 글 상세 조회",
             description = "모집 글 ID로 상세 정보를 조회합니다."
@@ -114,6 +115,7 @@ public class RecruitPostController {
             @ApiResponse(responseCode = "403", description = "해당 모집 글을 마감할 권한 없음"),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 모집 글")
     })
+
     @PatchMapping("/{postId}/close")
     public ResponseEntity<RecruitPostStatusResponseDto> closeRecruitPost(@PathVariable String postId, @AuthenticationPrincipal CustomUser user){
         return ResponseEntity.ok(
