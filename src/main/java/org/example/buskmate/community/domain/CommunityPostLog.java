@@ -40,9 +40,4 @@ public class CommunityPostLog {
     public void viewChecking() {
         this.viewedAt = LocalDateTime.now();
     }
-
-    // 최근 조회 시간 계산
-    public boolean isViewedWithinMinutes(Long minutes){
-        return viewedAt.isAfter(LocalDateTime.now().minusMinutes(minutes));
-    }
 }

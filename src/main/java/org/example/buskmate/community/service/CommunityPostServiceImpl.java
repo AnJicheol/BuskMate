@@ -41,11 +41,12 @@ public class CommunityPostServiceImpl implements CommunityPostService {
     public Page<CommunityPostReadAllPostResponse> getAllPost(
             Pageable pageable,
             String authorId,
-            CommunityPostReadAllPostRequest request){
-        Page<CommunityPost> posts = communityPostRepo.findByIsActive(PostStatus.ACTIVE, pageable);
+            CommunityPostReadAllPostRequest request
+    ){
+        Page<CommunityPost> posts = communityPostRepo.findAllByStatus(PostStatus.ACTIVE, pageable);
 
         return posts.map(post ->{
-            Long viewCount = communityPostLogService.getViewCount(post.getId());
+            Long viewCount = communityPostLogService.getViewCount(post);
             LocalDateTime displayTime = editCheck(post);
             Long chatCount = communityCommentService.countByCommunityPostId(post.getId());
 
@@ -64,7 +65,7 @@ public class CommunityPostServiceImpl implements CommunityPostService {
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
 
         communityPostLogService.checkAndRecordView(viewerId, post);
-        Long viewCount = communityPostLogService.getViewCount(post.getId());
+        Long viewCount = communityPostLogService.getViewCount(post);
 
         List<CommunityCommentResponseDto> comments =
                 communityCommentService.getCommentsByPostId(postId);
