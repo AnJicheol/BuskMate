@@ -68,8 +68,14 @@ public class CommunityPostServiceImpl implements CommunityPostService {
 
         List<CommunityCommentResponseDto> comments =
                 communityCommentService.getCommentsByPostId(postId);
+        LocalDateTime displayTime = editCheck(post);
 
-        return CommunityPostReadPostResponse.of(post, comments, viewCount);
+        return CommunityPostReadPostResponse.of(
+                post,
+                comments,
+                viewCount,
+                displayTime
+        );
     }
     // 4. 게시글 수정
     @Transactional
