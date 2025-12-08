@@ -27,26 +27,21 @@ import java.util.List;
 public interface BandRepository extends JpaRepository<Band, Long> {
 
     /**
-     * 주어진 밴드 ID와 상태에 해당하는 밴드를 조회합니다.
+     * 주어진 밴드 ID로 활성 상태(ACTIVE)의 밴드를 조회합니다.
      *
      * @param bandId 조회할 밴드의 외부 식별자(ULID)
-     * @param status 조회할 밴드의 상태 (ACTIVE/INACTIVE)
-     * @return 일치하는 밴드 엔티티. 없을 경우 null 반환
+     * @return 일치하는 활성 상태의 밴드 엔티티. 없을 경우 null 반환
      * @throws IllegalArgumentException bandId가 null이거나 빈 문자열인 경우
      * @see Band#getBandId()
-     * @see BandStatus
+     * @see BandStatus#ACTIVE
      */
     Band findByBandIdAndStatus(String bandId, BandStatus status);
 
     /**
-     * 지정된 상태를 가진 모든 밴드 목록을 조회합니다.
-     * <p>
-     * 주로 활성화된(ACTIVE) 밴드 목록을 조회하는 데 사용됩니다.
+     * 활성 상태(ACTIVE)인 모든 밴드 목록을 조회합니다.
      *
-     * @param status 조회할 밴드의 상태
-     * @return 지정된 상태의 밴드 목록. 없을 경우 빈 리스트 반환
+     * @return 활성 상태의 모든 밴드 목록. 없을 경우 빈 리스트 반환
      * @see BandStatus#ACTIVE
-     * @see BandStatus#INACTIVE
      */
     List<Band> findAllByStatus(BandStatus status);
 }
