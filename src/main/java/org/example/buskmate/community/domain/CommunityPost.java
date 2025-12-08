@@ -26,7 +26,7 @@ public class CommunityPost {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 16)
-    private DeleteStatus isDeleted;
+    private PostStatus isActive;
 
     @Column(nullable = false)
     private String content;
@@ -48,13 +48,12 @@ public class CommunityPost {
             String title,
             String authorId,
             String content,
-            DeleteStatus isDeleted
-    )
-    {
+            PostStatus isActive
+    ) {
         this.title = title;
         this.authorId = authorId;
         this.content = content;
-        this.isDeleted = isDeleted;
+        this.isActive = isActive;
     }
 
     // 필요한 메서드만 열어두기
@@ -65,7 +64,7 @@ public class CommunityPost {
                 .content(content)
                 .build();
 
-        createPost.isDeleted = DeleteStatus.ACTIVE;
+        createPost.isActive = PostStatus.ACTIVE;
         return createPost;
     }
 
@@ -76,7 +75,7 @@ public class CommunityPost {
     }
 
     public void softDelete(){
-        this.isDeleted = DeleteStatus.DELETED;
+        this.isActive = PostStatus.DELETED;
     }
 
 }

@@ -11,8 +11,7 @@ public record CommunityPostReadPostResponse(
         String content,
         List<CommunityCommentResponseDto> comments,
         Long viewCount
-)
-{
+) {
     public static CommunityPostReadPostResponse of(
             CommunityPost c,
             List<CommunityCommentResponseDto> comments,

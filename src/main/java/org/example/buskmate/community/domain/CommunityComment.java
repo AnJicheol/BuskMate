@@ -32,7 +32,7 @@ public class CommunityComment {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 16)
-    private DeleteStatus isDeleted;
+    private PostStatus isActive;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -51,12 +51,12 @@ public class CommunityComment {
             CommunityPost communityPost,
             String authorId,
             String content,
-            DeleteStatus isDeleted
+            PostStatus isActive
     ) {
         this.communityPost = communityPost;
         this.authorId = authorId;
         this.content = content;
-        this.isDeleted = isDeleted;
+        this.isActive = isActive;
     }
 
     public void updateComment(String content) {
@@ -64,6 +64,6 @@ public class CommunityComment {
     }
 
     public void softDelete() {
-        this.isDeleted = DeleteStatus.DELETED;
+        this.isActive = PostStatus.DELETED;
     }
 }

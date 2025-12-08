@@ -11,8 +11,7 @@ public record CommunityPostReadAllPostResponse(
         Long viewCount,
         LocalDateTime displayTime,
         Long chatCount
-)
-{
+) {
     public static CommunityPostReadAllPostResponse of(
             CommunityPost c,
             Long viewCount,

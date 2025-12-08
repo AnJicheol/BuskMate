@@ -29,7 +29,6 @@ public class CommunityPostController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     // 2. 전체 게시글 조회
-    // pageable 알아보기
     @GetMapping("/posts")
     public ResponseEntity<Page<CommunityPostReadAllPostResponse>> getAllPost(
             Pageable pageable,
@@ -37,6 +36,7 @@ public class CommunityPostController {
             CommunityPostReadAllPostRequest request){
 
         Page<CommunityPostReadAllPostResponse> response = communityPostService.getAllPost(pageable, authorId, request);
+
         return ResponseEntity.ok(response);
     }
     // 3. 특정 게시글 조회
@@ -47,6 +47,7 @@ public class CommunityPostController {
             @PathVariable Long postId,
             @RequestBody CommunityPostReadPostRequest request){
         CommunityPostReadPostResponse response = communityPostService.getPostId(viewerId, postId, request);
+
         return ResponseEntity.ok(response);
     }
     // 4. 게시글 수정

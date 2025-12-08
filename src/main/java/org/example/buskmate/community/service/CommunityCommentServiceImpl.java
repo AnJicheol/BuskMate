@@ -4,7 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.buskmate.community.domain.CommunityComment;
 import org.example.buskmate.community.domain.CommunityPost;
-import org.example.buskmate.community.domain.DeleteStatus;
+import org.example.buskmate.community.domain.PostStatus;
 import org.example.buskmate.community.dto.CommunityCommentCreateRequestDto;
 import org.example.buskmate.community.dto.CommunityCommentResponseDto;
 import org.example.buskmate.community.dto.CommunityCommentUpdateRequestDto;
@@ -26,9 +26,9 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
     @Override
     public List<CommunityCommentResponseDto> getCommentsByPostId(Long postId) {
         List<CommunityComment> comments =
-                commentRepository.findByCommunityPostIdAndIsDeletedOrderByCreatedAtAsc(
+                commentRepository.findByCommunityPostIdAndisActiveOrderByCreatedAtAsc(
                         postId,
-                        DeleteStatus.ACTIVE
+                        PostStatus.ACTIVE
                 );
 
         return comments.stream()
@@ -46,7 +46,7 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
                 .communityPost(post)
                 .authorId(authorId) //
                 .content(requestDto.getContent())
-                .isDeleted(DeleteStatus.ACTIVE)
+                .isActive(PostStatus.ACTIVE)
                 .build();
 
         CommunityComment saved = commentRepository.save(comment);
@@ -77,6 +77,6 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
     // Post당 댓글 수 조회
     @Transactional(readOnly =true)
     public Long countByCommunityPostId(Long postId) {
-        return commentRepository.countByCommunityPostIdAndIsDeleted(postId, DeleteStatus.ACTIVE);
+        return commentRepository.countByCommunityPostIdAndisActive(postId, PostStatus.ACTIVE);
     }
 }

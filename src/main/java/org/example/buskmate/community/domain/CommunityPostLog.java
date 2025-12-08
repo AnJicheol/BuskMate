@@ -23,7 +23,7 @@ public class CommunityPostLog {
     @Column(nullable = false, updatable = false)
     private String viewerId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime viewedAt;
 
     @Builder
@@ -35,14 +35,14 @@ public class CommunityPostLog {
         this.viewerId = viewerId;
     }
 
-    // 최초 조회 시간
+    // 조회 시간
     @PrePersist
-    public void prePersist() {
+    public void viewChecking() {
         this.viewedAt = LocalDateTime.now();
     }
 
     // 최근 조회 시간 계산
-    public boolean isViewedWithinMinutes(long minutes){
+    public boolean isViewedWithinMinutes(Long minutes){
         return viewedAt.isAfter(LocalDateTime.now().minusMinutes(minutes));
     }
 }

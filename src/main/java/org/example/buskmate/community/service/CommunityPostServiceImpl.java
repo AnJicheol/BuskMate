@@ -2,11 +2,12 @@ package org.example.buskmate.community.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.buskmate.community.domain.CommunityPost;
-import org.example.buskmate.community.domain.DeleteStatus;
+import org.example.buskmate.community.domain.PostStatus;
 import org.example.buskmate.community.dto.CommunityCommentResponseDto;
 import org.example.buskmate.community.dto.post.crud.request.*;
 import org.example.buskmate.community.dto.post.crud.response.CommunityPostReadAllPostResponse;
 import org.example.buskmate.community.dto.post.crud.response.CommunityPostReadPostResponse;
+import org.example.buskmate.community.exception.UnauthorizedPostAccessException;
 import org.example.buskmate.community.repository.CommunityPostRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,7 @@ public class CommunityPostServiceImpl implements CommunityPostService {
                 authorId,
                 request.content()
         );
+
         communityPostRepo.save(post);
     }
     // 2. 전체 게시글 조회
@@ -40,14 +43,13 @@ public class CommunityPostServiceImpl implements CommunityPostService {
             Pageable pageable,
             String authorId,
             CommunityPostReadAllPostRequest request){
-
-        Page<CommunityPost> posts = communityPostRepo.findByIsDeleted(DeleteStatus.ACTIVE, pageable);
+        Page<CommunityPost> posts = communityPostRepo.findByIsActive(PostStatus.ACTIVE, pageable);
 
         return posts.map(post ->{
             Long viewCount = communityPostLogService.getViewCount(post.getId());
             LocalDateTime displayTime = editCheck(post);
             Long chatCount = communityCommentService.countByCommunityPostId(post.getId());
-            // DTO 변환
+
             return new CommunityPostReadAllPostResponse(
                     post.getId(),
                     post.getAuthorId(),
@@ -63,11 +65,10 @@ public class CommunityPostServiceImpl implements CommunityPostService {
     public CommunityPostReadPostResponse getPostId(String viewerId, Long postId, CommunityPostReadPostRequest request){
         CommunityPost post = communityPostRepo.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
-        // 조회수 증가
+
         communityPostLogService.checkAndRecordView(viewerId, post);
-        // 댓글 수 조회
         Long viewCount = communityPostLogService.getViewCount(post.getId());
-        // 게시물 댓글 리턴
+
         List<CommunityCommentResponseDto> comments =
                 communityCommentService.getCommentsByPostId(postId);
 
@@ -78,8 +79,12 @@ public class CommunityPostServiceImpl implements CommunityPostService {
     public void updatePost(String authorId, Long postId, CommunityPostUpdatePostRequest request){
         CommunityPost post = communityPostRepo.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
+        if(!post.getAuthorId().equals(authorId)){
+            throw new UnauthorizedPostAccessException("작성자만 수정할 수 있습니다.");
+        }
 
         post.updatePost(request.title(), request.content());
+
         communityPostRepo.save(post);
     }
 
@@ -88,6 +93,9 @@ public class CommunityPostServiceImpl implements CommunityPostService {
     public void deletePost(String authorId, Long id){
         CommunityPost post = communityPostRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 없음"));
+        if(!post.getAuthorId().equals(authorId)){
+            throw new UnauthorizedPostAccessException("작성자만 삭제할 수 있습니다.");
+        }
 
         post.softDelete();
     }
