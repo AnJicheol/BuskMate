@@ -50,10 +50,8 @@ public class CommunityPostServiceImpl implements CommunityPostService {
             LocalDateTime displayTime = editCheck(post);
             Long chatCount = communityCommentService.countByCommunityPostId(post.getId());
 
-            return new CommunityPostReadAllPostResponse(
-                    post.getId(),
-                    post.getAuthorId(),
-                    post.getTitle(),
+            return CommunityPostReadAllPostResponse.of(
+                    post,
                     viewCount,
                     displayTime,
                     chatCount
