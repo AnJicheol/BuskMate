@@ -10,7 +10,6 @@ import java.util.Optional;
 @Repository
 public interface CommunityPostLogRepository extends JpaRepository<CommunityPostLog, Long> {
 
-
     Optional<CommunityPostLog> findTop1ByCommunityPostIdAndViewerIdOrderByViewedAtDesc(
             Long postId,
             String viewerId
