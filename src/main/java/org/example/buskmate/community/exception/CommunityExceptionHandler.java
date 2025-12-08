@@ -21,4 +21,14 @@ public class CommunityExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
+
+    @ExceptionHandler(UnauthorizedPostAccessException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedPostAccessException(UnauthorizedPostAccessException e) {
+        ErrorResponse body = new ErrorResponse(
+                "POST_UNAUTHORIZED",
+                e.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+    }
 }
