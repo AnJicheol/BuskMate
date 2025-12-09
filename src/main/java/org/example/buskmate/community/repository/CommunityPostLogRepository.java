@@ -16,7 +16,7 @@ public interface CommunityPostLogRepository extends JpaRepository<CommunityPostL
     );
 
     @Query("""
-        select count(distinct log.viewerId)
+        select coalesce(count(distinct log.viewerId), 0L)
         from CommunityPostLog log
         where log.communityPost.id = :postId
     """)

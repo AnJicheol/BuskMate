@@ -13,28 +13,21 @@ public class CommunityPostLogService {
     
     private final CommunityPostLogRepository communityPostLogRepo;
 
-    // 1. 조회수 증가
+    // 조회수를 증가시키고 게시물의 조회수를 리턴함
     @Transactional
-    public void checkAndRecordView(
-            String viewerId,
-            CommunityPost post
-    ) {
+    public Long recordAndGetViewCount(String viewerId, CommunityPost post){
+
         boolean viewedRecently = communityPostLogRepo
                 .findTop1ByCommunityPostIdAndViewerIdOrderByViewedAtDesc(post.getId(), viewerId)
                 .isPresent();
-        if (viewedRecently) return;
 
-        CommunityPostLog newLog = CommunityPostLog.builder()
-                .communityPost(post)
-                .viewerId(viewerId)
-                .build();
-
-        communityPostLogRepo.save(newLog);
-    }
-
-    // 2. 전체 게시물에 대한 조회수 리턴
-    @Transactional(readOnly = true)
-    public Long getViewCount(CommunityPost post){
+        if(!viewedRecently) {
+            CommunityPostLog newLog = CommunityPostLog.builder()
+                    .communityPost(post)
+                    .viewerId(viewerId)
+                    .build();
+            communityPostLogRepo.save(newLog);
+        }
         return communityPostLogRepo.countByCommunityPostId(post.getId());
     }
 }

@@ -18,7 +18,7 @@ public class CommunityPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name = "author_id", nullable = false, updatable = false)
     private String authorId;
 
     @Column(nullable = false)

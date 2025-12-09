@@ -26,7 +26,7 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
     @Override
     public List<CommunityCommentResponseDto> getCommentsByPostId(Long postId) {
         List<CommunityComment> comments =
-                commentRepository.findByCommunityPostIdAndisActiveOrderByCreatedAtAsc(
+                commentRepository.findByCommunityPostIdAndIsActiveOrderByCreatedAtAsc(
                         postId,
                         PostStatus.ACTIVE
                 );
@@ -72,11 +72,5 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
 
         comment.softDelete();
 
-    }
-
-    // Post당 댓글 수 조회
-    @Transactional(readOnly =true)
-    public Long countByCommunityPostId(Long postId) {
-        return commentRepository.countByCommunityPostIdAndisActive(postId, PostStatus.ACTIVE);
     }
 }

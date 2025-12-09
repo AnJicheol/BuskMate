@@ -11,11 +11,8 @@ import java.util.List;
 public interface CommunityCommentRepository extends JpaRepository<CommunityComment, Long> {
 
     // 특정 게시글의 활성댓글만 시간순으로 조회하기
-    List<CommunityComment> findByCommunityPostIdAndisActiveOrderByCreatedAtAsc(
+    List<CommunityComment> findByCommunityPostIdAndIsActiveOrderByCreatedAtAsc(
             Long communityPostId,
             PostStatus isActive
     );
-
-    // Post당 댓글 수 조회
-    Long countByCommunityPostIdAndisActive(Long postId, PostStatus isActive);
 }

@@ -19,8 +19,4 @@ public interface CommunityCommentService {
 
     // 댓글 삭제
     void deleteComment(Long commentId);
-
-    // post당 댓글 수 조회
-    Long countByCommunityPostId(Long postId);
-
 }

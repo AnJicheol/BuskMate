@@ -9,13 +9,13 @@ public record CommunityPostReadAllPostResponse(
         String authorId,
         String title,
         Long viewCount,
-        LocalDateTime displayTime,
+        LocalDateTime createdAt,
         Long chatCount
 ) {
     public static CommunityPostReadAllPostResponse of(
             CommunityPost c,
             Long viewCount,
-            LocalDateTime displayTime,
+            LocalDateTime createdAt,
             Long chatCount
     ){
         return new CommunityPostReadAllPostResponse(
@@ -23,7 +23,7 @@ public record CommunityPostReadAllPostResponse(
                 c.getAuthorId(),
                 c.getTitle(),
                 viewCount,
-                displayTime,
+                createdAt,
                 chatCount
         );
     }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.buskmate.community.dto.post.crud.request.*;
 import org.example.buskmate.community.dto.post.crud.response.CommunityPostReadAllPostResponse;
 import org.example.buskmate.community.dto.post.crud.response.CommunityPostReadPostResponse;
+import org.example.buskmate.community.service.CommunityPostFacadeService;
 import org.example.buskmate.community.service.CommunityPostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,12 +17,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+//테스트할 때는 Principal잠깐 지우고 다시 달아두기
 @RestController
 @RequestMapping("/community")
 @RequiredArgsConstructor
 public class CommunityPostController {
 
     private final CommunityPostService communityPostService;
+    private final CommunityPostFacadeService communityPostFacadeService;
 
     // 1. 게시글 생성
     @PostMapping("/posts/create")
@@ -53,10 +56,9 @@ public class CommunityPostController {
     )
     public ResponseEntity<Page<CommunityPostReadAllPostResponse>> getAllPost(
             Pageable pageable,
-            @AuthenticationPrincipal String authorId,
-            @ModelAttribute CommunityPostReadAllPostRequest request){
-
-        Page<CommunityPostReadAllPostResponse> response = communityPostService.getAllPost(pageable, authorId, request);
+            @AuthenticationPrincipal String authorId
+    ){
+        Page<CommunityPostReadAllPostResponse> response = communityPostService.getAllPost(pageable, authorId);
 
         return ResponseEntity.ok(response);
     }
@@ -73,12 +75,9 @@ public class CommunityPostController {
     )
     public ResponseEntity<CommunityPostReadPostResponse> getPostId(
             @AuthenticationPrincipal String viewerId,
-            @PathVariable Long postId,
-            @ModelAttribute CommunityPostReadPostRequest request
+            @PathVariable Long postId
     ){
-        CommunityPostReadPostResponse response = communityPostService.getPostId(viewerId, postId, request);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(communityPostFacadeService.getPostWithCommentAndView(viewerId, postId));
     }
     // 4. 게시글 수정
     // 생성, 수정, 삭제시의 comment 히스토리 호출하기
