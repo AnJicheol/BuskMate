@@ -18,7 +18,7 @@ public class ChatRoom {
     private Long id;
 
     @Column(name = "room_id", nullable = false, length = 100, unique = true)
-    private String roomKey;
+    private String roomId;
 
     @Column(name = "title", nullable = false, length = 100)
     private String title;
@@ -31,8 +31,8 @@ public class ChatRoom {
     private LocalDateTime createdAt;
 
 
-    public ChatRoom(String roomKey, String title) {
-        this.roomKey = roomKey;
+    public ChatRoom(String roomId, String title) {
+        this.roomId = roomId;
         this.title = title;
     }
 

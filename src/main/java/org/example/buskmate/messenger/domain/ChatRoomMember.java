@@ -29,13 +29,13 @@ public class ChatRoomMember {
     private ChatRoom room;
 
     @Column(name = "user_id", nullable = false)
-    private Long userId; // Users PK
+    private String userId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 20)
     private ChatRoomRole role;
 
-    @Column(name = "joined_at", nullable = false, updatable = false)
+    @Column(name = "joined_at", updatable = false)
     private LocalDateTime joinedAt;
 
     @Column(name = "left_at")
@@ -48,12 +48,12 @@ public class ChatRoomMember {
     @Column(name = "last_read_at")
     private LocalDateTime lastReadAt;
 
-    public ChatRoomMember(LocalDateTime lastReadAt, ChatRoom room, Long userId, LocalDateTime leftAt, Long lastReadMessageId, ChatRoomRole role) {
-        this.lastReadAt = lastReadAt;
+
+    public ChatRoomMember(ChatRoom room, String userId, ChatRoomRole role) {
         this.room = room;
         this.userId = userId;
-        this.leftAt = leftAt;
-        this.lastReadMessageId = lastReadMessageId;
+        this.role = role;
+        // joinedAt, leftAt, lastRead* 은 나중에 도메인 메서드로 채움
     }
 
     @PrePersist
@@ -64,4 +64,16 @@ public class ChatRoomMember {
     public boolean isActive() {
         return leftAt == null;
     }
+
+    // 방 나가기
+    public void leave() {
+        this.leftAt = LocalDateTime.now();
+    }
+
+    // 메시지 읽음 처리
+    public void markRead(Long messageId) {
+        this.lastReadMessageId = messageId;
+        this.lastReadAt = LocalDateTime.now();
+    }
+
 }
