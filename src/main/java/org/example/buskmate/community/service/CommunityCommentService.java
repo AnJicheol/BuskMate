@@ -20,4 +20,6 @@ public interface CommunityCommentService {
     // 댓글 삭제
     void deleteComment(Long commentId);
 
+    // 게시물 삭제 시, 게시물 댓글 소프트 삭제
+    void softDeleteCommentsByPostId(Long postId);
 }

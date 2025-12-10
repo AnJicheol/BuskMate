@@ -4,7 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.buskmate.community.domain.CommunityComment;
 import org.example.buskmate.community.domain.CommunityPost;
-import org.example.buskmate.community.domain.DeleteStatus;
+import org.example.buskmate.community.domain.PostStatus;
 import org.example.buskmate.community.dto.CommunityCommentCreateRequestDto;
 import org.example.buskmate.community.dto.CommunityCommentResponseDto;
 import org.example.buskmate.community.dto.CommunityCommentUpdateRequestDto;
@@ -26,9 +26,9 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
     @Override
     public List<CommunityCommentResponseDto> getCommentsByPostId(Long postId) {
         List<CommunityComment> comments =
-                commentRepository.findByCommunityPostIdAndIsDeletedOrderByCreatedAtAsc(
+                commentRepository.findByCommunityPostIdAndIsActiveOrderByCreatedAtAsc(
                         postId,
-                        DeleteStatus.ACTIVE
+                        PostStatus.ACTIVE
                 );
 
         return comments.stream()
@@ -46,7 +46,7 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
                 .communityPost(post)
                 .authorId(authorId) //
                 .content(requestDto.getContent())
-                .isDeleted(DeleteStatus.ACTIVE)
+                .isActive(PostStatus.ACTIVE)
                 .build();
 
         CommunityComment saved = commentRepository.save(comment);
@@ -72,5 +72,15 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
 
         comment.softDelete();
 
+    }
+
+    @Override
+    @Transactional
+    public void softDeleteCommentsByPostId(Long postId) {
+
+        List<CommunityComment> comments =
+                commentRepository.findByCommunityPostIdAndIsActiveOrderByCreatedAtAsc(postId, PostStatus.ACTIVE);
+
+        comments.forEach(CommunityComment::softDelete);
     }
 }

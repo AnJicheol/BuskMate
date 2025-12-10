@@ -18,7 +18,7 @@ public class CommunityPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "author_id", nullable = false, updatable = false)
     private String authorId;
 
     @Column(nullable = false)
@@ -26,18 +26,17 @@ public class CommunityPost {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 16)
-    private DeleteStatus isDeleted;
+    private PostStatus isActive;
 
-    @Version
     @Column(nullable = false)
-    private Long version;
+    private String content;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at", nullable = true)
     private LocalDateTime updatedAt;
 
     @Version
@@ -47,19 +46,36 @@ public class CommunityPost {
     @Builder
     private CommunityPost(
             String title,
-            DeleteStatus isDeleted
-    )
-    {
+            String authorId,
+            String content,
+            PostStatus isActive
+    ) {
         this.title = title;
-        this.isDeleted = isDeleted;
+        this.authorId = authorId;
+        this.content = content;
+        this.isActive = isActive;
     }
 
     // 필요한 메서드만 열어두기
-    public void updatePost(String title) {
+    public static CommunityPost createPost(String title, String authorId, String content) {
+        CommunityPost createPost = CommunityPost.builder()
+                .title(title)
+                .authorId(authorId)
+                .content(content)
+                .build();
+
+        createPost.isActive = PostStatus.ACTIVE;
+        return createPost;
+    }
+
+    // 본문 수정 시 호출
+    public void updatePost(String title, String content) {
         this.title = title;
+        this.content = content;
     }
 
     public void softDelete(){
-        this.isDeleted = DeleteStatus.DELETED;
+        this.isActive = PostStatus.DELETED;
     }
+
 }
