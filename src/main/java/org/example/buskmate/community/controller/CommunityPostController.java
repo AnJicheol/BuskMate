@@ -8,8 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.buskmate.community.dto.post.crud.request.*;
 import org.example.buskmate.community.dto.post.crud.response.CommunityPostReadAllPostResponse;
 import org.example.buskmate.community.dto.post.crud.response.CommunityPostReadPostResponse;
+import org.example.buskmate.community.service.CommunityPostDeleteFacadeService;
 import org.example.buskmate.community.service.CommunityPostFacadeService;
 import org.example.buskmate.community.service.CommunityPostService;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-//테스트할 때는 Principal잠깐 지우고 다시 달아두기
 @RestController
 @RequestMapping("/community")
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class CommunityPostController {
 
     private final CommunityPostService communityPostService;
     private final CommunityPostFacadeService communityPostFacadeService;
+    private final CommunityPostDeleteFacadeService communityPostDeleteFacadeService;
 
     // 1. 게시글 생성
     @PostMapping("/posts/create")
@@ -55,7 +57,7 @@ public class CommunityPostController {
             description = "전체 게시물 조회 성공"
     )
     public ResponseEntity<Page<CommunityPostReadAllPostResponse>> getAllPost(
-            Pageable pageable,
+            @ParameterObject Pageable pageable,
             @AuthenticationPrincipal String authorId
     ){
         Page<CommunityPostReadAllPostResponse> response = communityPostService.getAllPost(pageable, authorId);
@@ -112,7 +114,7 @@ public class CommunityPostController {
             @AuthenticationPrincipal String authorId,
             @PathVariable Long id
     ){
-        communityPostService.deletePost(authorId, id);
+        communityPostDeleteFacadeService.deletePostWithComment(authorId, id);
         return ResponseEntity.noContent().build();
     }
 }

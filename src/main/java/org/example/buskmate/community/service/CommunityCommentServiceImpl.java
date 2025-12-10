@@ -73,4 +73,14 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
         comment.softDelete();
 
     }
+
+    @Override
+    @Transactional
+    public void softDeleteCommentsByPostId(Long postId) {
+
+        List<CommunityComment> comments =
+                commentRepository.findByCommunityPostIdAndIsActiveOrderByCreatedAtAsc(postId, PostStatus.ACTIVE);
+
+        comments.forEach(CommunityComment::softDelete);
+    }
 }

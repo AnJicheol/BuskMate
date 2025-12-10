@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommunityPostServiceImpl implements CommunityPostService {
 
     private final CommunityPostRepository communityPostRepo;
+    private final CommunityCommentService communityCommentService;
 
     // 1. 게시글 생성
     @Transactional
@@ -61,6 +62,7 @@ public class CommunityPostServiceImpl implements CommunityPostService {
         if(!post.getAuthorId().equals(authorId)){
             throw new UnauthorizedPostAccessException("작성자만 삭제할 수 있습니다.");
         }
+
         post.softDelete();
     }
 }
