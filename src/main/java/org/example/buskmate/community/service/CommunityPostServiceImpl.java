@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommunityPostServiceImpl implements CommunityPostService {
 
     private final CommunityPostRepository communityPostRepo;
-    private final CommunityCommentService communityCommentService;
 
     // 1. 게시글 생성
     @Transactional
