@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.buskmate.map.domain.MarkerType;
 
-import java.util.Set;
 
 @Getter
 @Builder
@@ -20,6 +18,5 @@ public class MapMarkerSearchRequestDto {
     private double northEastLat;
     private double northEastLng;
 
-    private Set<MarkerType> types;
 
 }

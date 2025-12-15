@@ -16,10 +16,8 @@
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
-
-        @Enumerated(EnumType.STRING)
-        @Column(name = "marker_type", nullable = false)
-        private MarkerType markerType;
+        @Column(nullable = false)
+        private String postId;
 
         @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
         @JoinColumn(name = "map_location_id", nullable = false, unique = true)
@@ -35,27 +33,25 @@
         private LocalDateTime createdAt;
 
 
-
-
         MapMarker(
-                MarkerType markerType,
+                String postId,
                 MapLocation location,
                 String title,
                 String summary
         ) {
-            this.markerType = markerType;
+            this.postId = postId;
             this.location = location;
             this.title = title;
             this.summary = summary;
         }
 
         public static MapMarker of(
-                MarkerType markerType,
+                String postId,
                 MapLocation location,
                 String title,
                 String summary
         ) {
-            return new MapMarker(markerType, location, title, summary);
+            return new MapMarker(postId, location, title, summary);
         }
 
 
@@ -63,4 +59,5 @@
         void onPrePersist() {
             this.createdAt = LocalDateTime.now();
         }
+
     }

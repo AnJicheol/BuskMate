@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.buskmate.map.domain.MapMarker;
-import org.example.buskmate.map.domain.MarkerType;
 
 @Getter
 @Builder
@@ -15,7 +14,7 @@ import org.example.buskmate.map.domain.MarkerType;
 public class MapMarkerResponseDto{
 
     private Long id;
-    private MarkerType markerType;
+    private String postId;
     private double lat;
     private double lng;
     private String title;
@@ -24,7 +23,7 @@ public class MapMarkerResponseDto{
     public static MapMarkerResponseDto from(MapMarker marker) {
         return MapMarkerResponseDto.builder()
                 .id(marker.getId())
-                .markerType(marker.getMarkerType())
+                .postId(marker.getPostId())
                 .lat(marker.getLocation().getLat())
                 .lng(marker.getLocation().getLng())
                 .title(marker.getTitle())
