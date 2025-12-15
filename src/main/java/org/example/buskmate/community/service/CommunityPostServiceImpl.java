@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommunityPostServiceImpl implements CommunityPostService {
 
     private final CommunityPostRepository communityPostRepo;
+    private final CommunityPostDataHistoryService historyService;
 
     // 1. 게시글 생성
     @Transactional
@@ -27,7 +28,8 @@ public class CommunityPostServiceImpl implements CommunityPostService {
                 request.content()
         );
 
-        communityPostRepo.save(post);
+        communityPostRepo.saveAndFlush(post);
+        historyService.saveHistory(post, post.getContent());
     }
     // 2. 전체 게시글 조회
     @Transactional(readOnly = true)
@@ -41,16 +43,16 @@ public class CommunityPostServiceImpl implements CommunityPostService {
     // 4. 게시글 수정
     @Transactional
     public void updatePost(String authorId, Long postId, CommunityPostUpdatePostRequest request){
-        communityPostRepo.findById(postId)
-                .ifPresentOrElse(post -> {
-                    if(!post.getAuthorId().equals(authorId)){
-                        throw new UnauthorizedPostAccessException("작성자만 수정할 수 있습니다.");
-                    }
-                    post.updatePost(request.title(), request.content());
-                    communityPostRepo.save(post);
-                }, () -> {
-                    throw new IllegalArgumentException("존재하지 않는 게시글 입니다.");
-                });
+        CommunityPost post = communityPostRepo.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글 입니다."));
+
+        if(!post.getAuthorId().equals(authorId)){
+            throw new UnauthorizedPostAccessException("작성자만 수정할 수 있습니다.");
+        }
+
+        historyService.saveHistory(post, post.getContent());
+
+        post.updatePost(request.title(), request.content());
     }
 
     // 5. 게시글 삭제
