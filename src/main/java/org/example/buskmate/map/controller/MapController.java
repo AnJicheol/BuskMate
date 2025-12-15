@@ -2,7 +2,6 @@ package org.example.buskmate.map.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.buskmate.map.domain.MarkerType;
 import org.example.buskmate.map.dto.MapMarkerCreateRequestDto;
 import org.example.buskmate.map.dto.MapMarkerResponseDto;
 import org.example.buskmate.map.dto.MapMarkerSearchRequestDto;
@@ -49,20 +48,13 @@ public class MapController {
             @RequestParam double northEastLat,
 
             @Parameter(description = "북동쪽 경도(NE longitude)", example = "127.05")
-            @RequestParam double northEastLng,
-
-            @Parameter(
-                    description = "필터링할 마커 타입 집합 (예: BAND,BUSKING). 비우면 전체 타입 조회",
-                    example = "BAND"
-            )
-            @RequestParam(required = false) Set<MarkerType> types
+            @RequestParam double northEastLng
     ) {
         MapMarkerSearchRequestDto request = MapMarkerSearchRequestDto.builder()
                 .southWestLat(southWestLat)
                 .southWestLng(southWestLng)
                 .northEastLat(northEastLat)
                 .northEastLng(northEastLng)
-                .types(types) // null/empty면 서비스에서 전체 타입 허용
                 .build();
 
         return mapMarkerService.getMarkersInBounds(request);
