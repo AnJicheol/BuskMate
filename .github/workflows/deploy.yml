@@ -1,5 +1,6 @@
 name: Build JAR and Deploy to EC2 (via ECR)
 
+
 on:
   push:
     branches: [ "master" ]
