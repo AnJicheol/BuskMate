@@ -17,6 +17,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+/**
+ * 게시글 데이터 히스토리 API 컨트롤러
+ * - 게시글 수정 시 저장된 버전 히스토리 목록을 조회한다.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/community")
@@ -25,7 +29,9 @@ public class CommunityPostDataHistoryController {
 
     private final CommunityPostDataHistoryService historyService;
 
-    // 특정 게시글의 히스토리 목록 조회
+    /**
+     * 특정 게시글의 히스토리 목록을 최신순으로 조회한다.
+     */
     @GetMapping("/posts/{postId}/histories")
     @Operation(
             summary = "게시글 히스토리 목록 조회",

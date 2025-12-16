@@ -15,6 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * 댓글 서비스 구현체
+ * - 댓글 CRUD 및 소프트 삭제 로직을 처리한다.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,6 +27,9 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
     private final CommunityCommentRepository commentRepository;
     private final CommunityPostRepository postRepository;
 
+    /**
+     * 특정 게시글의 활성 댓글을 시간순으로 조회해 응답 DTO로 반환한다.
+     */
     @Override
     public List<CommunityCommentResponseDto> getCommentsByPostId(Long postId) {
         List<CommunityComment> comments =
@@ -36,6 +43,9 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
                 .toList();
     }
 
+    /**
+     * 특정 게시글을 조회한 뒤 댓글 엔티티를 생성/저장하고 응답 DTO로 반환한다.
+     */
     @Override
     @Transactional
     public CommunityCommentResponseDto createComment(Long postId, String authorId, CommunityCommentCreateRequestDto requestDto) {
@@ -44,7 +54,7 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
 
         CommunityComment comment = CommunityComment.builder()
                 .communityPost(post)
-                .authorId(authorId) //
+                .authorId(authorId)
                 .content(requestDto.getContent())
                 .isActive(PostStatus.ACTIVE)
                 .build();
@@ -53,6 +63,9 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
         return CommunityCommentResponseDto.from(saved);
     }
 
+    /**
+     * 댓글을 조회한 뒤 내용을 수정하고 응답 DTO로 반환한다.
+     */
     @Override
     @Transactional
     public CommunityCommentResponseDto updateComment(Long commentId, CommunityCommentUpdateRequestDto requestDto) {
@@ -64,6 +77,9 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
         return CommunityCommentResponseDto.from(comment);
     }
 
+    /**
+     * 댓글을 조회한 뒤 소프트 삭제 상태로 변경한다.
+     */
     @Override
     @Transactional
     public void deleteComment(Long commentId) {
@@ -71,13 +87,14 @@ public class CommunityCommentServiceImpl implements CommunityCommentService {
                 .orElseThrow(() -> new EntityNotFoundException("Comment not found: " + commentId));
 
         comment.softDelete();
-
     }
 
+    /**
+     * 특정 게시글의 활성 댓글들을 조회하여 일괄 소프트 삭제한다.
+     */
     @Override
     @Transactional
     public void softDeleteCommentsByPostId(Long postId) {
-
         List<CommunityComment> comments =
                 commentRepository.findByCommunityPostIdAndIsActiveOrderByCreatedAtAsc(postId, PostStatus.ACTIVE);
 

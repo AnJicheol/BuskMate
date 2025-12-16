@@ -10,8 +10,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+/**
+ * 게시글 JPA 레포지토리
+ * - 게시글 목록 요약(조회수/댓글수 집계 포함) 조회 쿼리를 제공한다.
+ */
 @Repository
 public interface CommunityPostRepository extends JpaRepository<CommunityPost,Long> {
+
+    /**
+     * 활성 게시글 목록을 페이징으로 조회하며, 조회수/댓글수를 함께 집계하여 DTO로 반환한다.
+     */
     @Query(
             value = """
         select new org.example.buskmate.community.dto.post.crud.response.CommunityPostReadAllPostResponse(

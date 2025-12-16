@@ -8,6 +8,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
+/**
+ * 커뮤니티 게시글 엔티티
+ * - 작성자/제목/본문/상태(활성/삭제)를 관리한다.
+ * - @Version을 통해 낙관적 락 기반 동시성 제어를 지원한다.
+ */
 @Getter
 @Table(name = "community_post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,6 +48,10 @@ public class CommunityPost {
     @Column(nullable = false)
     private Long version;
 
+    /**
+     * 게시글 엔티티 생성자(Builder)
+     * - 제목/작성자/본문/상태를 초기화한다.
+     */
     @Builder
     private CommunityPost(
             String title,
@@ -56,7 +65,10 @@ public class CommunityPost {
         this.isActive = isActive;
     }
 
-    // 필요한 메서드만 열어두기
+    /**
+     * 게시글 생성용 정적 팩토리 메서드
+     * - 생성 시 기본 상태를 ACTIVE로 설정한다.
+     */
     public static CommunityPost createPost(String title, String authorId, String content) {
         CommunityPost createPost = CommunityPost.builder()
                 .title(title)
@@ -68,12 +80,17 @@ public class CommunityPost {
         return createPost;
     }
 
-    // 본문 수정 시 호출
+    /**
+     * 게시글 제목/본문을 수정한다.
+     */
     public void updatePost(String title, String content) {
         this.title = title;
         this.content = content;
     }
 
+    /**
+     * 게시글을 소프트 삭제 상태로 변경한다.
+     */
     public void softDelete(){
         this.isActive = PostStatus.DELETED;
     }

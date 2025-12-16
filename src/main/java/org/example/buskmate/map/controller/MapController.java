@@ -18,6 +18,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+/**
+ * 지도 마커 API 컨트롤러
+ * - 지도 화면에서 마커 조회/등록/삭제 요청을 처리한다.
+ * - bounds(현재 지도 영역) + 타입 필터 기반 조회를 지원한다.
+ */
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/map")
@@ -27,7 +33,8 @@ public class MapController {
     private final MapMarkerService mapMarkerService;
 
     /**
-     * 현재 지도 bounds + 타입 필터 기반 마커 조회
+     * 지도 bounds(남서/북동 좌표)와 타입 필터를 기반으로 마커 목록을 조회한다.
+     * - types가 null/empty면 전체 타입을 조회한다.
      */
     @GetMapping("/markers")
     @Operation(
@@ -61,7 +68,8 @@ public class MapController {
     }
 
     /**
-     * 지도 마커 등록
+     * 위도/경도, 타입, 제목 정보를 기반으로 새로운 지도 마커를 등록한다.
+     * - 요청 DTO 검증(@Valid) 실패 시 400을 반환한다.
      */
     @PostMapping("/markers")
     @Operation(
@@ -79,7 +87,8 @@ public class MapController {
     }
 
     /**
-     * 지도 마커 삭제
+     * 마커 ID로 특정 지도 마커를 삭제한다.
+     * - 대상이 없으면 404를 반환한다.
      */
     @DeleteMapping("/markers/{markerId}")
     @Operation(

@@ -6,6 +6,10 @@ import org.example.buskmate.community.domain.CommunityComment;
 
 import java.time.LocalDateTime;
 
+/**
+ * 댓글 응답 DTO
+ * - 댓글 엔티티를 클라이언트 응답 형태로 변환한다.
+ */
 @Getter
 public class CommunityCommentResponseDto {
 
