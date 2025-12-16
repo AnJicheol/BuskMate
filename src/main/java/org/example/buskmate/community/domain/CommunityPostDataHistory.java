@@ -9,6 +9,10 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+/**
+ * 게시글 본문 변경 이력을 저장하는 엔티티
+ * - 게시글 수정 시점의 버전(postVersion)과 본문(content)을 기록한다.
+ */
 @Entity
 @Getter
 @Table(name = "community_post_data_history")
@@ -33,6 +37,10 @@ public class CommunityPostDataHistory {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    /**
+     * 히스토리 엔티티 생성자(Builder)
+     * - 게시글/버전/본문을 저장한다.
+     */
     @Builder
     private CommunityPostDataHistory(
             CommunityPost communityPost,
@@ -44,7 +52,9 @@ public class CommunityPostDataHistory {
         this.content = content;
     }
 
-
+    /**
+     * 게시글/버전/본문을 기반으로 히스토리 엔티티를 생성한다.
+     */
     public static CommunityPostDataHistory from(
             CommunityPost post,
             Long postVersion,

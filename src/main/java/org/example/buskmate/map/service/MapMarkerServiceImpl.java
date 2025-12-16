@@ -16,6 +16,10 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 지도 마커 서비스 구현체
+ * - 레포지토리를 이용해 마커 조회/등록/삭제를 수행한다.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,6 +27,9 @@ public class MapMarkerServiceImpl implements MapMarkerService {
 
     private final MapMarkerRepository mapMarkerRepository;
 
+    /**
+     * bounds 영역으로 DB 조회 후, 필요 시 타입 필터를 적용하여 응답 DTO 목록으로 반환한다.
+     */
     @Override
     public List<MapMarkerResponseDto> getMarkersInBounds(MapMarkerSearchRequestDto request) {
 
@@ -45,6 +52,9 @@ public class MapMarkerServiceImpl implements MapMarkerService {
 
     }
 
+    /**
+     * 요청 DTO 기반으로 위치/마커 엔티티를 생성하고 저장한 뒤, 응답 DTO로 변환해 반환한다.
+     */
     @Transactional
     @Override
     public MapMarkerResponseDto createMarker(MapMarkerCreateRequestDto request) {
@@ -69,6 +79,10 @@ public class MapMarkerServiceImpl implements MapMarkerService {
         return MapMarkerResponseDto.from(saved);
     }
 
+    /**
+     * markerId로 마커를 조회하여 삭제한다.
+     * - 조회 실패 시 404(MapMarker not found)를 반환한다.
+     */
     @Transactional
     @Override
     public void deleteMarker(Long markerId) {

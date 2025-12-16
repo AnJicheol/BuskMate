@@ -19,6 +19,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 커뮤니티 게시글 API 컨트롤러
+ * - 게시글 생성/전체 조회/단일 조회/수정/삭제 기능을 제공한다.
+ * - 단일 조회는 Facade를 통해 조회수 기록 및 댓글 포함 응답을 함께 처리한다.
+ * - 삭제는 Facade를 통해 댓글 소프트 삭제까지 함께 처리한다.
+ */
 @RestController
 @RequestMapping("/community")
 @RequiredArgsConstructor
@@ -28,7 +34,9 @@ public class CommunityPostController {
     private final CommunityPostFacadeService communityPostFacadeService;
     private final CommunityPostDeleteFacadeService communityPostDeleteFacadeService;
 
-    // 1. 게시글 생성
+    /**
+     * 게시글 제목/내용으로 게시글을 생성한다.
+     */
     @PostMapping("/posts/create")
     @Operation(
             summary = "게시글 생성",
@@ -46,7 +54,11 @@ public class CommunityPostController {
         communityPostService.createPost(request, authorId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-    // 2. 전체 게시글 조회
+
+    /**
+     * 전체 게시글을 페이징 형태로 조회한다.
+     * - 목록에서는 제목/작성자/조회수/댓글수 등의 요약 정보를 제공한다.
+     */
     @GetMapping("/posts")
     @Operation(
             summary = "전체 게시글 조회",
@@ -64,7 +76,11 @@ public class CommunityPostController {
 
         return ResponseEntity.ok(response);
     }
-    // 3. 단일 게시글 조회
+
+    /**
+     * 단일 게시글을 조회한다.
+     * - 조회 시 조회수 기록/집계 및 댓글 목록 포함 응답을 Facade에서 처리한다.
+     */
     @GetMapping("/posts/{postId}")
     @Operation(
             summary = "단일 게시글 조회",
@@ -81,8 +97,13 @@ public class CommunityPostController {
     ){
         return ResponseEntity.ok(communityPostFacadeService.getPostWithCommentAndView(viewerId, postId));
     }
-    // 4. 게시글 수정
-    // 생성, 수정, 삭제시의 comment 히스토리 호출하기
+
+
+
+    /**
+     * 게시글을 수정한다.
+     * - 작성자만 수정 가능하며 제목/내용을 변경한다.
+     */
     @PatchMapping("/posts/edit/{postId}")
     @Operation(
             summary = "단일 게시글 수정",
@@ -100,7 +121,13 @@ public class CommunityPostController {
         communityPostService.updatePost(authorId, postId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-    // 5. 게시글 삭제
+
+
+    /**
+     * 게시글을 삭제한다.
+     * - 게시글 삭제와 함께 해당 게시글의 댓글 소프트 삭제를 Facade에서 함께 처리한다.
+     */
+
     @DeleteMapping("/posts/delete/{id}")
     @Operation(
             summary = "단일 게시글 삭제",

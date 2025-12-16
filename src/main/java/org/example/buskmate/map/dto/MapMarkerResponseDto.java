@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import org.example.buskmate.map.domain.MapMarker;
 import org.example.buskmate.map.domain.MarkerType;
 
+/**
+ * 지도 마커 응답 DTO
+ * - 엔티티(MapMarker)를 클라이언트 응답 형태로 변환한다.
+ */
 @Getter
 @Builder
 @AllArgsConstructor

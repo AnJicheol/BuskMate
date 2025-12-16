@@ -5,7 +5,10 @@ import lombok.Getter;
 import org.example.buskmate.community.domain.CommunityPostDataHistory;
 
 import java.time.LocalDateTime;
-
+/**
+ * 게시글 데이터 히스토리 응답 DTO
+ * - 버전별 본문 변경 이력을 클라이언트 응답 형태로 변환한다.
+ */
 @Getter
 public class CommunityPostDataHistoryResponseDto {
 

@@ -5,15 +5,29 @@ import org.example.buskmate.community.dto.post.crud.response.CommunityPostReadAl
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+/**
+ * 게시글 서비스 인터페이스
+ * - 게시글 생성/목록 조회/수정/삭제 기능을 정의한다.
+ */
 public interface CommunityPostService {
 
-    // 1. 게시글 생성
+    /**
+     * 게시글을 생성한다.
+     */
     void createPost(CommunityPostCreatePostRequest request, String authorId);
-    // 2. 전체 게시글 조회
+
+    /**
+     * 전체 게시글 목록을 페이징으로 조회한다.
+     */
     Page<CommunityPostReadAllPostResponse> getAllPost(Pageable pageable, String authorId);
-    // 3. 게시글 조회는 CommunityPostFacadeService
-    // 4. 게시글 수정
+
+    /**
+     * 게시글을 수정한다.
+     */
     void updatePost(String authorId, Long postId, CommunityPostUpdatePostRequest request);
-    // 5. 게시글 삭제
+
+    /**
+     * 게시글을 소프트 삭제한다.
+     */
     void deletePost(String authorId, Long id);
 }
