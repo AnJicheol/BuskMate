@@ -10,27 +10,37 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * 밴드 관련 비즈니스 로직을 구현한 서비스 클래스입니다.
+ *
+ * <p>
+ * 밴드 생성, 조회, 목록 조회, 정보 수정, 비활성화 등
+ * 밴드 도메인의 핵심 기능을 처리합니다.
+ * </p>
+ *
+ * @since 1.0.0
+ */
 @Service
 @RequiredArgsConstructor
 public class BandServiceImpl implements BandService {
 
     private final BandRepository bandRepository;
 
+    /**
+     * 새로운 밴드를 생성합니다.
+     */
     @Override
     @Transactional
     public BandCreateResponse create(BandCreateRequest request, String leaderId) {
 
-        // 엔티티 생성
         Band band = Band.create(
                 request.getName(),
                 leaderId,
                 request.getImageUrl()
         );
 
-        // 저장
         bandRepository.save(band);
 
-        // 응답 생성
         return BandCreateResponse.builder()
                 .bandId(band.getBandId())
                 .name(band.getName())
@@ -40,13 +50,14 @@ public class BandServiceImpl implements BandService {
                 .build();
     }
 
-
+    /**
+     * 밴드 ID로 활성 상태의 밴드 상세 정보를 조회합니다.
+     */
     @Override
     @Transactional(readOnly = true)
     public BandDetailResponse getByBandId(String bandId) {
 
         Band band = bandRepository.findByBandIdAndStatus(bandId, BandStatus.ACTIVE);
-
         if (band == null) {
             throw new IllegalArgumentException("해당 밴드가 존재하지 않습니다: " + bandId);
         }
@@ -60,6 +71,9 @@ public class BandServiceImpl implements BandService {
                 .build();
     }
 
+    /**
+     * 활성 상태의 모든 밴드 목록을 조회합니다.
+     */
     @Override
     @Transactional(readOnly = true)
     public List<BandListItemResponse> getAllBands() {
@@ -74,14 +88,16 @@ public class BandServiceImpl implements BandService {
                 .toList();
     }
 
+    /**
+     * 밴드의 기본 정보를 수정합니다.
+     */
     @Override
     @Transactional
     public BandDetailResponse updateBand(String bandId, UpdateBandRequest req) {
 
         Band band = bandRepository.findByBandIdAndStatus(bandId, BandStatus.ACTIVE);
-
         if (band == null) {
-            throw new IllegalArgumentException(bandId);
+            throw new IllegalArgumentException("해당 밴드가 존재하지 않습니다: " + bandId);
         }
 
         band.updateInfo(req.getName(), req.getImageUrl());
@@ -95,17 +111,18 @@ public class BandServiceImpl implements BandService {
                 .build();
     }
 
+    /**
+     * 밴드를 비활성화합니다.
+     */
     @Override
     @Transactional
     public void deactivate(String bandId) {
 
         Band band = bandRepository.findByBandIdAndStatus(bandId, BandStatus.ACTIVE);
-
         if (band == null) {
             throw new IllegalArgumentException("해당 밴드가 존재하지 않습니다: " + bandId);
         }
 
         band.deactivate();
     }
-
 }

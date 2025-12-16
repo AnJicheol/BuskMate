@@ -19,6 +19,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+/**
+ * 밴드 멤버 관련 HTTP 요청을 처리하는 컨트롤러입니다.
+ *
+ * <p>
+ * 밴드 멤버 조회, 초대, 초대 수락/거절, 멤버 추방과 같은
+ * 밴드 멤버십 관리 기능을 제공합니다.
+ * </p>
+ *
+ * @since 1.0.0
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/bands")
@@ -27,6 +37,9 @@ public class BandMemberController {
 
     private final BandMemberService bandMemberService;
 
+    /**
+     * 특정 밴드의 멤버 목록을 조회합니다.
+     */
     @Operation(
             summary = "밴드 멤버 목록 조회",
             description = "bandId에 해당하는 밴드의 멤버 목록을 조회합니다."
@@ -48,10 +61,12 @@ public class BandMemberController {
             @Parameter(description = "밴드 외부 식별자", example = "01JH1ABCDXYZ...")
             @PathVariable String bandId
     ) {
-        List<BandMemberListItemResponse> members = bandMemberService.getMembers(bandId);
-        return ResponseEntity.ok(members);
+        return ResponseEntity.ok(bandMemberService.getMembers(bandId));
     }
 
+    /**
+     * 밴드 리더가 특정 사용자를 밴드 멤버로 초대합니다.
+     */
     @Operation(
             summary = "밴드 멤버 초대",
             description = "밴드 리더가 다른 유저를 밴드 멤버로 초대합니다."
@@ -63,7 +78,7 @@ public class BandMemberController {
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "요청 값 검증 실패 (예: 잘못된 userId 형식)",
+                    description = "요청 값 검증 실패",
                     content = @Content
             ),
             @ApiResponse(
@@ -78,7 +93,7 @@ public class BandMemberController {
             ),
             @ApiResponse(
                     responseCode = "409",
-                    description = "이미 멤버이거나 대기중인 초대가 존재함",
+                    description = "이미 멤버이거나 대기 중인 초대가 존재함",
                     content = @Content
             )
     })
@@ -98,6 +113,9 @@ public class BandMemberController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * 밴드 초대를 수락합니다.
+     */
     @Operation(
             summary = "밴드 초대 수락",
             description = "현재 로그인한 사용자가 특정 밴드의 초대를 수락합니다."
@@ -129,6 +147,9 @@ public class BandMemberController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * 밴드 초대를 거절합니다.
+     */
     @Operation(
             summary = "밴드 초대 거절",
             description = "현재 로그인한 사용자가 특정 밴드의 초대를 거절합니다."
@@ -160,6 +181,9 @@ public class BandMemberController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * 밴드 리더가 특정 멤버를 밴드에서 추방합니다.
+     */
     @Operation(
             summary = "밴드 멤버 추방",
             description = "밴드 리더가 특정 멤버를 밴드에서 추방합니다."
