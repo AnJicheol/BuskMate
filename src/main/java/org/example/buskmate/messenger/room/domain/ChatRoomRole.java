@@ -1,4 +1,4 @@
-package org.example.buskmate.messenger.domain;
+package org.example.buskmate.messenger.room.domain;
 
 public enum ChatRoomRole {
     OWNER,
