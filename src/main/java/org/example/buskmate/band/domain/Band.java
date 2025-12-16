@@ -11,9 +11,11 @@ import java.time.LocalDateTime;
 
 /**
  * 버스킹 밴드를 나타내는 도메인 엔티티입니다.
+ *
  * <p>
- * 이 클래스는 버스킹 밴드의 핵심 정보와 행위를 캡슐화하며, JPA를 통해 데이터베이스와 매핑됩니다.
- * 밴드의 수명 주기(생성, 수정, 비활성화)를 관리하고, 도메인 규칙을 적용합니다.
+ * 버스킹 팀(밴드)의 기본 정보와 상태를 관리하며,
+ * 밴드 생성, 정보 수정, 비활성화와 같은 핵심 도메인 행위를 포함합니다.
+ * 본 엔티티는 JPA를 통해 데이터베이스와 매핑됩니다.
  * </p>
  *
  * <h3>주요 특징</h3>
@@ -29,12 +31,14 @@ import java.time.LocalDateTime;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "bands",
+@Entity
+@Table(
+        name = "bands",
         indexes = {
                 @Index(name = "idx_band_band_id", columnList = "band_id", unique = true),
                 @Index(name = "idx_band_leader_id", columnList = "leader_id")
-        })
-@Entity
+        }
+)
 public class Band {
 
     @Id
@@ -61,11 +65,9 @@ public class Band {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    // ===== 생성 =====
-
     @Builder
     private Band(String bandId, String name, String leaderId, String imageUrl) {
-        this.bandId = bandId;                 // null이면 @PrePersist에서 채움
+        this.bandId = bandId;
         this.name = name;
         this.leaderId = leaderId;
         this.imageUrl = imageUrl;
@@ -73,13 +75,7 @@ public class Band {
     }
 
     /**
-     * 새로운 밴드 인스턴스를 생성하는 정적 팩토리 메서드입니다.
-     *
-     * @param name 밴드 이름 (필수)
-     * @param leaderId 밴드장의 사용자 식별자 (필수)
-     * @param imageUrl 밴드 대표 이미지 URL (선택)
-     * @return 새로운 {@code Band} 인스턴스
-     * @throws IllegalArgumentException 필수 파라미터가 null이거나 비어있는 경우
+     * 새로운 밴드 인스턴스를 생성합니다.
      */
     public static Band create(String name, String leaderId, String imageUrl) {
         return Band.builder()
@@ -89,27 +85,18 @@ public class Band {
                 .build();
     }
 
-    // ===== 도메인 로직 =====
-
     /**
-     * 밴드의 기본 정보를 업데이트합니다.
-     *
-     * @param name 새로 설정할 밴드 이름. null이거나 빈 문자열인 경우 기존 값 유지
-     * @param imageUrl 새로 설정할 이미지 URL. null 허용 (이미지 제거)
+     * 밴드의 기본 정보를 수정합니다.
      */
     public void updateInfo(String name, String imageUrl) {
         if (name != null && !name.isBlank()) {
             this.name = name.trim();
         }
-        this.imageUrl = imageUrl; // null 허용(이미지 제거)
+        this.imageUrl = imageUrl;
     }
 
     /**
      * 밴드를 비활성화합니다.
-     * <p>
-     * 이 메서드는 밴드의 상태를 {@link BandStatus#INACTIVE}로 변경하여
-     * 소프트 삭제를 수행합니다. 이 작업은 되돌릴 수 없으며,
-     * 이후 해당 밴드는 조회에서 제외되어야 합니다.
      */
     public void deactivate() {
         this.status = BandStatus.INACTIVE;

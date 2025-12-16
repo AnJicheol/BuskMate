@@ -3,6 +3,16 @@ package org.example.buskmate.band.dto.band;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * 밴드 상세 정보를 반환하기 위한 DTO입니다.
+ *
+ * <p>
+ * 특정 밴드에 대한 상세 조회 요청 시,
+ * 밴드의 기본 정보를 클라이언트에 전달하는 용도로 사용됩니다.
+ * </p>
+ *
+ * @since 1.0.0
+ */
 @Getter
 @Builder
 public class BandDetailResponse {
