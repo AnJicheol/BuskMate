@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.example.buskmate.auth.dto.UsersPrincipal;
 import org.example.buskmate.band.dto.CustomUser;
 import org.example.buskmate.messenger.chat.dto.ChatMessageResponse;
 import org.example.buskmate.messenger.chat.service.ChatUseCase;
@@ -59,8 +60,9 @@ public class ChatMessageController {
             @PathVariable String roomId,
             @RequestParam(required = false) String cursor,
             @RequestParam(defaultValue = "30") int size,
-            @AuthenticationPrincipal CustomUser user
-    ) {
+            @AuthenticationPrincipal UsersPrincipal user
+            ) {
+
         return ResponseEntity.ok(chatUseCase.getMessages(roomId, user.getUserId(), cursor, size));
     }
 

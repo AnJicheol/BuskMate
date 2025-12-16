@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.buskmate.auth.dto.UsersPrincipal;
 import org.example.buskmate.messenger.room.dto.*;
 import org.example.buskmate.messenger.room.service.ChatRoomUseCase;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +44,8 @@ public class ChatRoomController {
             @ApiResponse(responseCode = "403", description = "권한 없음", content = @Content)
     })
     @PostMapping
-    public ResponseEntity<Void> createGroupChatRoom(@RequestBody RoomCreateRequest request, @AuthenticationPrincipal CustomUser owner) {
-        chatRoomUseCase.createGroupChatRoom(request, owner);
+    public ResponseEntity<Void> createGroupChatRoom(@RequestBody RoomCreateRequest request, @AuthenticationPrincipal UsersPrincipal owner) {
+        chatRoomUseCase.createGroupChatRoom(request, new CustomUser(owner.getUserId()));
         return ResponseEntity.ok().build();
     }
 
@@ -70,9 +71,9 @@ public class ChatRoomController {
     public ResponseEntity<Void> inviteMember(
             @PathVariable String roomId,
             @Valid @RequestBody MemberInviteRequest request,
-            @AuthenticationPrincipal CustomUser owner) {
+            @AuthenticationPrincipal UsersPrincipal owner) {
 
-        chatRoomUseCase.inviteMember(roomId, request, owner);
+        chatRoomUseCase.inviteMember(roomId, request, new CustomUser(owner.getUserId()));
         return ResponseEntity.ok().build();
     }
 
@@ -98,9 +99,9 @@ public class ChatRoomController {
     public ResponseEntity<Void> kickMember(
             @PathVariable String roomId,
             @Valid @RequestBody MemberKickRequest request,
-            @AuthenticationPrincipal CustomUser owner) {
+            @AuthenticationPrincipal UsersPrincipal owner) {
 
-        chatRoomUseCase.kickMember(roomId, request, owner);
+        chatRoomUseCase.kickMember(roomId, request, new CustomUser(owner.getUserId()));
         return ResponseEntity.ok().build();
     }
 
@@ -123,9 +124,9 @@ public class ChatRoomController {
     @DeleteMapping("/{roomId}")
     public ResponseEntity<Void> deleteRoom(
             @PathVariable String roomId,
-            @AuthenticationPrincipal CustomUser owner) {
+            @AuthenticationPrincipal UsersPrincipal owner) {
 
-        chatRoomUseCase.deleteRoom(roomId, owner);
+        chatRoomUseCase.deleteRoom(roomId, new CustomUser(owner.getUserId()));
         return ResponseEntity.ok().build();
     }
 
@@ -148,7 +149,7 @@ public class ChatRoomController {
             @ApiResponse(responseCode = "401", description = "인증 실패", content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<MyChatRoomResponse>> myRooms(@AuthenticationPrincipal CustomUser user) {
-        return ResponseEntity.ok(chatRoomUseCase.getMyRooms(user));
+    public ResponseEntity<List<MyChatRoomResponse>> myRooms(@AuthenticationPrincipal UsersPrincipal user) {
+        return ResponseEntity.ok(chatRoomUseCase.getMyRooms(new CustomUser(user.getUserId())));
     }
 }

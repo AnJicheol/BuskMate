@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.example.buskmate.auth.dto.UsersPrincipal;
 import org.example.buskmate.community.dto.CommunityCommentCreateRequestDto;
 import org.example.buskmate.community.dto.CommunityCommentResponseDto;
 import org.example.buskmate.community.dto.CommunityCommentUpdateRequestDto;
@@ -67,12 +68,12 @@ public class CommunityCommentController {
             @PathVariable Long postId,
 
             @Parameter(hidden = true) // Swagger UI 에서 숨김
-            @AuthenticationPrincipal String authorId,
+            @AuthenticationPrincipal UsersPrincipal user,
 
             @RequestBody CommunityCommentCreateRequestDto requestDto
     ) {
         CommunityCommentResponseDto response =
-                commentService.createComment(postId, authorId, requestDto);
+                commentService.createComment(postId, user.getUserId(), requestDto);
 
         return ResponseEntity.ok(response);
     }
@@ -96,7 +97,7 @@ public class CommunityCommentController {
             @PathVariable Long commentId,
 
             @Parameter(hidden = true)
-            @AuthenticationPrincipal String authorId,
+            @AuthenticationPrincipal UsersPrincipal user,
 
             @RequestBody CommunityCommentUpdateRequestDto requestDto
     ) {
@@ -124,7 +125,7 @@ public class CommunityCommentController {
             @PathVariable Long commentId,
 
             @Parameter(hidden = true)
-            @AuthenticationPrincipal String authorId
+            @AuthenticationPrincipal UsersPrincipal user
     ) {
         commentService.deleteComment(commentId);
         return ResponseEntity.noContent().build();

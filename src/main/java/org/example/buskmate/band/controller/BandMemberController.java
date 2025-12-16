@@ -1,6 +1,7 @@
 package org.example.buskmate.band.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.buskmate.auth.dto.UsersPrincipal;
 import org.example.buskmate.band.dto.CustomUser;
 import org.example.buskmate.band.dto.bandmember.BandMemberListItemResponse;
 import org.example.buskmate.band.dto.bandmember.BandMemberRegisterRequest;
@@ -102,7 +103,7 @@ public class BandMemberController {
             @Parameter(description = "밴드 외부 식별자", example = "01JH1ABCDXYZ...")
             @PathVariable String bandId,
             @Parameter(hidden = true)
-            @AuthenticationPrincipal CustomUser leader,
+            @AuthenticationPrincipal UsersPrincipal leader,
             @RequestBody BandMemberRegisterRequest request
     ) {
         bandMemberService.inviteMember(
@@ -141,7 +142,7 @@ public class BandMemberController {
             @Parameter(description = "밴드 외부 식별자", example = "01JH1ABCDXYZ...")
             @PathVariable String bandId,
             @Parameter(hidden = true)
-            @AuthenticationPrincipal CustomUser user
+            @AuthenticationPrincipal UsersPrincipal user
     ) {
         bandMemberService.acceptInvitation(bandId, user.getUserId());
         return ResponseEntity.noContent().build();
@@ -175,7 +176,7 @@ public class BandMemberController {
             @Parameter(description = "밴드 외부 식별자", example = "01JH1ABCDXYZ...")
             @PathVariable String bandId,
             @Parameter(hidden = true)
-            @AuthenticationPrincipal CustomUser user
+            @AuthenticationPrincipal UsersPrincipal user
     ) {
         bandMemberService.rejectInvitation(bandId, user.getUserId());
         return ResponseEntity.noContent().build();
@@ -211,7 +212,7 @@ public class BandMemberController {
             @Parameter(description = "추방 대상 유저 ID", example = "user-123")
             @PathVariable String targetUserId,
             @Parameter(hidden = true)
-            @AuthenticationPrincipal CustomUser leader
+            @AuthenticationPrincipal UsersPrincipal leader
     ) {
         bandMemberService.kickMember(bandId, leader.getUserId(), targetUserId);
         return ResponseEntity.noContent().build();

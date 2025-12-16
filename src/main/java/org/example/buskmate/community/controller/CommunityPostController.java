@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.example.buskmate.auth.dto.UsersPrincipal;
 import org.example.buskmate.community.dto.post.crud.request.*;
 import org.example.buskmate.community.dto.post.crud.response.CommunityPostReadAllPostResponse;
 import org.example.buskmate.community.dto.post.crud.response.CommunityPostReadPostResponse;
@@ -49,9 +50,9 @@ public class CommunityPostController {
 
     public ResponseEntity<Void> createPost(
             @RequestBody CommunityPostCreatePostRequest request,
-            @AuthenticationPrincipal String authorId
-    ){
-        communityPostService.createPost(request, authorId);
+            @AuthenticationPrincipal UsersPrincipal user
+            ){
+        communityPostService.createPost(request, user.getUserId());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -70,9 +71,9 @@ public class CommunityPostController {
     )
     public ResponseEntity<Page<CommunityPostReadAllPostResponse>> getAllPost(
             @ParameterObject Pageable pageable,
-            @AuthenticationPrincipal String authorId
+            @AuthenticationPrincipal UsersPrincipal user
     ){
-        Page<CommunityPostReadAllPostResponse> response = communityPostService.getAllPost(pageable, authorId);
+        Page<CommunityPostReadAllPostResponse> response = communityPostService.getAllPost(pageable, user.getUserId());
 
         return ResponseEntity.ok(response);
     }
@@ -92,10 +93,10 @@ public class CommunityPostController {
             content = @Content(schema = @Schema(implementation = CommunityPostReadPostResponse.class))
     )
     public ResponseEntity<CommunityPostReadPostResponse> getPostId(
-            @AuthenticationPrincipal String viewerId,
+            @AuthenticationPrincipal UsersPrincipal user,
             @PathVariable Long postId
     ){
-        return ResponseEntity.ok(communityPostFacadeService.getPostWithCommentAndView(viewerId, postId));
+        return ResponseEntity.ok(communityPostFacadeService.getPostWithCommentAndView(user.getUserId(), postId));
     }
 
 
@@ -114,11 +115,11 @@ public class CommunityPostController {
             description = "application/json"
     )
     public ResponseEntity<Void> updatePost(
-            @AuthenticationPrincipal String authorId,
+            @AuthenticationPrincipal UsersPrincipal user,
             @PathVariable Long postId,
             @RequestBody CommunityPostUpdatePostRequest request
     ){
-        communityPostService.updatePost(authorId, postId, request);
+        communityPostService.updatePost(user.getUserId(), postId, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -138,10 +139,10 @@ public class CommunityPostController {
             description = "application/json"
     )
     public ResponseEntity<Void> deletePost(
-            @AuthenticationPrincipal String authorId,
+            @AuthenticationPrincipal UsersPrincipal user,
             @PathVariable Long id
     ){
-        communityPostDeleteFacadeService.deletePostWithComment(authorId, id);
+        communityPostDeleteFacadeService.deletePostWithComment(user.getUserId(), id);
         return ResponseEntity.noContent().build();
     }
 }

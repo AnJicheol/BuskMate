@@ -2,6 +2,7 @@ package org.example.buskmate.band.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.buskmate.auth.dto.UsersPrincipal;
 import org.example.buskmate.band.dto.CustomUser;
 import org.example.buskmate.band.dto.band.*;
 import org.example.buskmate.band.service.BandService;
@@ -60,7 +61,7 @@ public class BandController {
     public ResponseEntity<BandCreateResponse> create(
             @Valid @RequestBody BandCreateRequest request,
             @Parameter(hidden = true)
-            @AuthenticationPrincipal CustomUser user
+            @AuthenticationPrincipal UsersPrincipal user
     ) {
         BandCreateResponse response = bandService.create(request, user.getUserId());
         return ResponseEntity.ok(response);

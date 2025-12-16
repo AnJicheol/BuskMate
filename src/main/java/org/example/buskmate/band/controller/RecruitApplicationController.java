@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.example.buskmate.auth.dto.UsersPrincipal;
 import org.example.buskmate.band.dto.CustomUser;
 import org.example.buskmate.band.dto.recruitapplication.RecruitApplicationListItemDto;
 import org.example.buskmate.band.dto.recruitapplication.RecruitApplyResponseDto;
@@ -78,7 +79,7 @@ public class RecruitApplicationController {
             @ApiResponse(responseCode = "409", description = "이미 지원한 모집 글")
     })
     @PostMapping("/{postId}/apply")
-    public ResponseEntity<RecruitApplyResponseDto> apply(@PathVariable String postId, @AuthenticationPrincipal CustomUser user){
+    public ResponseEntity<RecruitApplyResponseDto> apply(@PathVariable String postId, @AuthenticationPrincipal UsersPrincipal user){
         RecruitApplyResponseDto response = recruitApplicationService.apply(postId, user.getUserId());
 
         return ResponseEntity.ok(response);
@@ -109,7 +110,7 @@ public class RecruitApplicationController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 지원 내역")
     })
     @DeleteMapping("/apply/{applicationId}")
-    public ResponseEntity<Void> delete(@PathVariable String applicationId, @AuthenticationPrincipal CustomUser user){
+    public ResponseEntity<Void> delete(@PathVariable String applicationId, @AuthenticationPrincipal UsersPrincipal user){
         recruitApplicationService.delete(applicationId, user.getUserId());
         return ResponseEntity.noContent().build();
     }
@@ -139,7 +140,7 @@ public class RecruitApplicationController {
             @ApiResponse(responseCode = "409", description = "이미 처리된 지원(수락/거절 완료)")
     })
     @PatchMapping("/{applicationId}/accept")
-    public ResponseEntity<Void> accept(@PathVariable String applicationId, @AuthenticationPrincipal CustomUser user){
+    public ResponseEntity<Void> accept(@PathVariable String applicationId, @AuthenticationPrincipal UsersPrincipal user){
         recruitApplicationService.accept(applicationId, user.getUserId());
         return ResponseEntity.noContent().build();
     }
@@ -170,7 +171,7 @@ public class RecruitApplicationController {
             @ApiResponse(responseCode = "409", description = "이미 처리된 지원(수락/거절 완료)")
     })
     @PatchMapping("/{applicationId}/reject")
-    public ResponseEntity<Void> reject(@PathVariable String applicationId, @AuthenticationPrincipal CustomUser user){
+    public ResponseEntity<Void> reject(@PathVariable String applicationId, @AuthenticationPrincipal UsersPrincipal user){
         recruitApplicationService.reject(applicationId, user.getUserId());
         return ResponseEntity.noContent().build();
     }
@@ -208,7 +209,7 @@ public class RecruitApplicationController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 모집 글")
     })
     @GetMapping("/{postId}/applications")
-    public ResponseEntity<Page<RecruitApplicationListItemDto>> getApplications(@PathVariable String postId,@AuthenticationPrincipal CustomUser user,
+    public ResponseEntity<Page<RecruitApplicationListItemDto>> getApplications(@PathVariable String postId,@AuthenticationPrincipal UsersPrincipal user,
                                                                                @RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "appliedAt"));
 

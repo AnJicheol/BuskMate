@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.example.buskmate.auth.dto.UsersPrincipal;
 import org.example.buskmate.band.dto.CustomUser;
 import org.example.buskmate.band.dto.recruitpost.*;
 import org.example.buskmate.band.service.RecruitPostService;
@@ -76,7 +77,7 @@ public class RecruitPostController {
             @ApiResponse(responseCode = "403", description = "해당 밴드 리더가 아님")
     })
     @PostMapping
-    public ResponseEntity<CreateRecruitPostResponseDto> createRecruitPost(@RequestBody CreateRecruitPostRequestDto req, @AuthenticationPrincipal CustomUser user) {
+    public ResponseEntity<CreateRecruitPostResponseDto> createRecruitPost(@RequestBody CreateRecruitPostRequestDto req, @AuthenticationPrincipal UsersPrincipal user) {
         return ResponseEntity.ok(
                 recruitPostService.create(req, user.getUserId()));
     }
@@ -166,7 +167,7 @@ public class RecruitPostController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 모집 글")
     })
     @PatchMapping("/{postId}")
-    public ResponseEntity<RecruitPostDetailResponseDto> updateRecruitPost(@PathVariable String postId, @RequestBody UpdateRecruitPostRequestDto req,@AuthenticationPrincipal CustomUser user){
+    public ResponseEntity<RecruitPostDetailResponseDto> updateRecruitPost(@PathVariable String postId, @RequestBody UpdateRecruitPostRequestDto req,@AuthenticationPrincipal UsersPrincipal user){
         return ResponseEntity.ok(
                 recruitPostService.update(postId, req, user.getUserId()));
     }
@@ -199,7 +200,7 @@ public class RecruitPostController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 모집 글")
     })
     @PatchMapping("/{postId}/close")
-    public ResponseEntity<RecruitPostStatusResponseDto> closeRecruitPost(@PathVariable String postId, @AuthenticationPrincipal CustomUser user){
+    public ResponseEntity<RecruitPostStatusResponseDto> closeRecruitPost(@PathVariable String postId, @AuthenticationPrincipal UsersPrincipal user){
         return ResponseEntity.ok(
                 recruitPostService.close(postId, user.getUserId()));
     }
@@ -232,7 +233,7 @@ public class RecruitPostController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 모집 글")
     })
     @PatchMapping("/{postId}/delete")
-    public ResponseEntity<RecruitPostStatusResponseDto> deleteRecruitPost(@PathVariable String postId, @AuthenticationPrincipal CustomUser user){
+    public ResponseEntity<RecruitPostStatusResponseDto> deleteRecruitPost(@PathVariable String postId, @AuthenticationPrincipal UsersPrincipal user){
         return ResponseEntity.ok(
                 recruitPostService.delete(postId, user.getUserId()));
     }

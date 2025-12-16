@@ -1,20 +1,29 @@
 package org.example.buskmate.auth.config;
 
+import org.springframework.core.convert.converter.Converter;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
+import org.example.buskmate.auth.dto.UsersPrincipal;
 import org.example.buskmate.auth.exception.AuthAccessDeniedHandler;
 import org.example.buskmate.auth.exception.AuthEntryPoint;
 import org.example.buskmate.auth.service.CustomOAuth2UserService;
 import org.example.buskmate.auth.service.Oauth2LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.List;
 
 
 @Configuration
@@ -33,17 +42,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+
+                // ⚠️ 토이 프로젝트 편의 설정: 운영 환경에서는 사용 금지
+                // - 모든 엔드포인트를 인증 없이 허용합니다.
+                // - 운영에서는 최소한 /api/**, /ws 등은 인증/인가 정책을 반드시 적용하세요.
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/",
-                                "/login",
-                                "/oauth2/**",
-                                "/api/auth/**"
-                        ).permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(authEntryPoint)       // 401: 인증 없음/실패
@@ -59,7 +66,10 @@ public class SecurityConfig {
                         .authenticationEntryPoint(authEntryPoint)
                         .accessDeniedHandler(authAccessDeniedHandler)
                         .bearerTokenResolver(bearerTokenResolver())
-                        .jwt(jwt -> jwt.decoder(jwtDecoder))
+                        .jwt(jwt -> jwt
+                                .decoder(jwtDecoder)
+                                .jwtAuthenticationConverter(jwtToUsersPrincipal())
+                        )
                 );
 
         return http.build();
@@ -78,6 +88,26 @@ public class SecurityConfig {
                 }
             }
             return null;
+        };
+    }
+
+    @Bean
+    public Converter<Jwt, ? extends AbstractAuthenticationToken> jwtToUsersPrincipal() {
+        return (Jwt jwt) -> {
+            List<GrantedAuthority> authorities =
+                    List.of(new SimpleGrantedAuthority("ROLE_USER"));
+
+            String userId = jwt.getSubject();
+            Object nicknameClaim = jwt.getClaims().get("nickname");
+            String nickname = nicknameClaim == null ? "" : nicknameClaim.toString();
+
+            UsersPrincipal principal = new UsersPrincipal(
+                    userId,
+                    nickname,
+                    authorities
+            );
+
+            return new UsernamePasswordAuthenticationToken(principal, jwt, authorities);
         };
     }
 }

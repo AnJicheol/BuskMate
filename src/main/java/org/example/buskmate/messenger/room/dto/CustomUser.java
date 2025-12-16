@@ -1,5 +1,6 @@
 package org.example.buskmate.messenger.room.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -15,6 +16,7 @@ import lombok.Getter;
  *
  */
 @Getter
+@AllArgsConstructor
 public class CustomUser {
     private String userId;
 }

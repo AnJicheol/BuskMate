@@ -1,4 +1,6 @@
+package org.example.buskmate.band.repository;
 
+import lombok.Getter;
 
 @Getter
 public class postDto {
@@ -9,7 +11,6 @@ public class postDto {
      * 밴드의 이름입니다.
      * <p>
      * 최대 60자까지 입력 가능하며, 필수 입력 항목입니다.
-     * {@link #updateInfo(String, String)} 메서드를 통해 수정할 수 있습니다.
      */
 
     private String name;
