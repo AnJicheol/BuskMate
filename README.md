@@ -83,4 +83,6 @@ org.example.buskmate
      └─ room                      // 채팅방: 방 생성/삭제, 멤버 참여/탈퇴, 권한(OWNER/MEMBER), 방 목록/조회
         └─ -mvc                  
 ```
+<br><br>
 
+## [API 명세서](./BuskBate_API_명세서.pdf)
