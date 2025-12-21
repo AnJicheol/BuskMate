@@ -1,149 +1,83 @@
-## ⚙️프로세스
+# BuskMate
+<br>
 
-1. 이슈 생성 → 백로그(Backlog) 배치
+## 개요
+BuskMate는 동네에서 같이 연주할 사람을 빠르게 모으고, 일정·장소를 간단히 맞춘 뒤, 바로 대화까지 이어갈 수 있는 가벼운 밴드 매칭 서비스입니다.
 
-2. 이슈 담당자 지정 후 In progress로 이동
-
-3. 로컬에서 dev 최신 받기
-
-4. dev에서 feature 브랜치 생성
-
-5. 기능 개발 후 dev 대상으로 PR 생성
-
-6. 코드 리뷰 → 통과 시 dev에 머지
-
-7. 기능들이 dev에 일정량 모이면 release 브랜치 생성
-
+기존 모집 서비스는 입력할 것도 많고 절차도 길어서, “일단 한 번 맞춰볼까?” 같은 가벼운 합주에는 시작하기가 부담스러웠습니다. BuskMate는 꼭 필요한 정보만으로 모집을 올리고, 가까운 사람들과 바로 연결되도록 흐름을 최대한 단순하게 만들어 빠르게 매칭하고 바로 소통하는 데 집중합니다.
 
 <br><br>
+
+## Team
+
+| 이름 | 역할 | 주요 담당 |  
+| --- | --- | --- | 
+| 안지철 | BE, 팀 리더 |Oauth2 + JWT 기반 로그인 구현, 메시징 시스템 개발 |  
+| 김유정 | BE, 인프라 구축 | 밴드 시스템 개발 |  
+| 김에스더 | BE, 인프라 구축 | 밴드 시스템 개발 |  
+| 안희건 | BE, PPT 제작 | 커뮤니티 시스템 개발|  
+| 신수호 | BE| 커뮤니티 시스템 개발, 지도 시스템 개발 |  
+
+<br><br>
+
+## Tech Stack
+
+- Backend: Spring Boot, Java 21, Spring Data JPA
+- DB: MySQL
+- Infra: AWS EC2, RDS
+
+<br><br>
+
+## 아키텍처 & ERD
+
+<img width="937" height="875" alt="image" src="https://github.com/user-attachments/assets/fa6c80d1-9be5-45e2-b965-7be490425a11" />
+
+<br><br>
+
+<img width="1763" height="1116" alt="image" src="https://github.com/user-attachments/assets/737bcc61-8232-4ffe-8ae3-7087fb5d7255" />
+
+<br><br>
+
+## 작동
+1) 밴드(권한/역할)
+* 밴드는 OWNER / MEMBER 두 역할로 운영합니다.
+* OWNER가 밴드를 만들고 멤버를 관리하며, 모집글(포스트)을 등록하면 해당 밴드의 모집 흐름이 시작됩니다.
+* MEMBER는 모집글을 보고 참여/탈퇴하는 식으로 합주 인원을 구성합니다.
+
+2) 모집글 → 지도 마커(카카오 지도)
+* OWNER가 모집글을 올릴 때 모집 위치(위·경도) 를 함께 저장합니다.
+* 프론트는 카카오 지도 SDK로 지도를 그리고, 서버에서 받은 좌표로 마커를 찍어 “모집 중인 위치”를 보여줍니다.
+* 백엔드는 지도 SDK를 직접 다루지 않고 좌표만 보관/조회하며, 별도 지도 API 호출 없이도 마커 노출이 가능합니다.
+* 마커에는 모집글 제목/공고 정보 + 모집 지역이 같이 보이도록 연결됩니다.
+
+3) 메시징(STOMP)
+* 모집글로 연결된 사용자들은 채팅에서 WebSocket + STOMP로 실시간 대화를 합니다.
+* ChannelInterceptor에서 JWT를 파싱해 사용자 식별만 합니다.
+
+<br><br>
+
 
 ## 🧱 패키지/모듈 구조
 
 ```text
-com.yourapp.pos
-  ├─ auth              // 인증/권한, 카카오 로그인, 점주-포스기 1:N 연동
-  │  ├─ domain
-  │  └─ application
-  ├─ order             // 주문 프로세스, 결제신청→완료신호→장바구니 비우기
-  │  ├─ domain
-  │  └─ application
-  ├─ cart              // 장바구니 생성/추가/수량/삭제/결제시 비우기
-  │  ├─ domain
-  │  └─ application
-  ├─ product           // 상품: id, 이름, 가격, 상태 / 생성·조회·수정
-  │  ├─ domain
-  │  └─ application
-  ├─ inventory         // 재고/상품 관리: 등록, 품절, 수동추천
-  │  ├─ domain
-  │  └─ application
-  ├─ payment           // 결제/할인 인터페이스, 현금/카드, 외부 모듈 어댑터
-  │  ├─ domain
-  │  └─ application
-  └─ common            // 공통 예외, 공통 dto, 유틸
+org.example.buskmate
+  ├─ BuskMateApplication.java
+  ├─ auth                        // 인증/인가, OAuth2 로그인/토큰, 사용자 식별·세션/Principal 처리
+  │  ├─ config                   
+  │  ├─ exception                
+  │  └─ -mvc                     
+  ├─ band                        // 밴드 도메인: 밴드 생성/수정, 멤버(OWNER/MEMBER) 관리, 모집글/지원 관리
+  │  └─ -mvc                     
+  ├─ community                   // 커뮤니티: 게시글 CRUD, 피드/목록/상세, (필요시) 댓글/좋아요 확장 지점
+  │  ├─ exception                
+  │  └─ -mvc                    
+  ├─ map                         // 지도: 좌표 기반 마커 조회/표시 데이터 제공
+  │  └─ -mvc                    
+  └─ messenger                   // 메신저: 실시간 채팅, 방/메시지 관리, STOMP/WebSocket 설정
+     ├─ config                   
+     ├─ chat                      // 채팅 메시지
+     │  └─ -mvc                   
+     └─ room                      // 채팅방: 방 생성/삭제, 멤버 참여/탈퇴, 권한(OWNER/MEMBER), 방 목록/조회
+        └─ -mvc                  
 ```
 
-<br><br>
-
-## 📏 네이밍 규칙
-
-| 대상 | 적용 범위 | 규칙 |
-| --- | --- | --- |
-| 파일/클래스 | `class`, `interface`, `enum`, 스프링 컴포넌트 | **UpperCamelCase** *(= PascalCase, 파스칼)* |
-| 메서드 | 모든 메서드/핸들러 | **lowerCamelCase** *(로워 카멜)* |
-| 변수 | 필드/지역/파라미터 | **lowerCamelCase** |
-| 상수 | `static final` | **UPPER_SNAKE_CASE** *(대문자 스네이크)* |
-| 패키지 | 패키지 경로 | **모두 소문자 + 점(.)** |
-| 엔티티 필드 | JPA 엔티티 속성 | **lowerCamelCase** |
-| DB 테이블/컬럼 | 스키마/마이그레이션 | **snake_case** *(스네이크)* |
-| 엔티티↔DB 매핑 | `@Table`, `@Column` | 엔티티=c**amel**, DB=**snake** |
-
-<br><br>
-
-## 🌀 Git Flow 전략
-
-| 브랜치명 | 용도 | 비고 |
-|---------|------|------|
-| `master` | 실제 배포 브랜치 | 운영용, 코드 리뷰 후 병합 |
-| `dev` | 개발 통합 브랜치 | 모든 feature 브랜치가 여기로 병합 |
-| `feature/*` | 기능 개발 | `ex) feature/AUTH-SCRUM-20` 형식 |
-| `fix/*` | 버그 수정 | |
-| `hotfix/*` | 긴급 수정 | |
-| `release/*` | 배포 준비 | 테스트 완료 후 master로 병합 |
-
-
-브랜치명 + 이슈 번호 + 이슈 제목
-ex) feat/#123-add-cart-item-api
-
-
-<br><br>
-
-## 💬 커밋 컨벤션
-
-| 태그 | 설명 |
-|------|------|
-| `feat:` | 새로운 기능 추가 |
-| `fix:` | 버그 수정 |
-| `refactor:` | 리팩토링 (기능 변경 없음) |
-| `docs:` | 문서 변경 |
-| `style:` | 코드 스타일/포맷 변경 |
-| `test:` | 테스트 코드 관련 |
-| `chore:` | 설정, 빌드, 패키지 등 기타 변경 |
-
-<br><br>
-
-
-## 🛠 개발 규칙 (CloudPosProject)
-
-```md
-1. 단위 테스트 필수
-2. 문서화(Javadoc) 필수
-  * 공개 메서드(public)와 도메인 엔티티에는 Javadoc 작성
-  * 비즈니스 규칙이 있는 메서드는 동작/파라미터/예외 명시
-3. API 명세는 Swagger로 관리
-  * 컨트롤러 추가 시 Swagger에서 확인 가능한 상태로 PR
-4. 환경 설정 분리
-  * 레포에는 공용 application.yml 수정시 리뷰 필수
-  * 개인 개발용은 application-{name}.yml 또는 .env 만들어서 사용 (커밋 금지)
-5. YML에 민감정보 직접 기입 금지 (AWS로 별도 관리)
-6. env 파일 커밋 금지
-```
-
-
-
-## 📦 API 응답 포맷
-
-✅ 성공 응답:
-```json
-{
-  "success": true,
-  "status": 200,
-  "data": {
-    // 실제 DTO 값
-  }
-}
-```
-❌ 실패 응답:
-
-```json
-{
-  "success": false,
-  "status": 400,
-  "data": null
-}
-```
-
-<br>
-
-## 🚦 HTTP 상태코드 통일
-
-| 코드 | 의미                   | 사용 예                                |
-|------|------------------------|----------------------------------------|
-| 200  | OK                     | 일반 요청 성공 (GET, POST 요청 등)    |
-| 201  | Created                | 자원 생성 완료 (POST 성공 시)         |
-| 204  | No Content             | 응답 없음 (DELETE 요청 등)            |
-| 400  | Bad Request            | 클라이언트 요청 오류 (유효성 실패 등) |
-| 401  | Unauthorized           | 인증 실패 (로그인 필요)               |
-| 403  | Forbidden              | 권한 없음 (비인가 요청)               |
-| 404  | Not Found              | 리소스 없음 (잘못된 ID 등)           |
-| 409  | Conflict               | 중복 충돌 (이메일 중복 등)            |
-| 500  | Internal Server Error  | 서버 내부 에러 (처리 불가능한 예외)   |
