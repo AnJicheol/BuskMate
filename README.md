@@ -6,6 +6,9 @@ BuskMate는 동네에서 같이 연주할 사람을 빠르게 모으고, 일정�
 
 기존 모집 서비스는 입력할 것도 많고 절차도 길어서, “일단 한 번 맞춰볼까?” 같은 가벼운 합주에는 시작하기가 부담스러웠습니다. BuskMate는 꼭 필요한 정보만으로 모집을 올리고, 가까운 사람들과 바로 연결되도록 흐름을 최대한 단순하게 만들어 빠르게 매칭하고 바로 소통하는 데 집중합니다.
 
+<img width="1160" height="717" alt="image" src="https://github.com/user-attachments/assets/a78b8574-e3a0-4f55-a61d-b80a78652e4e" />
+
+
 <br><br>
 
 ## Team
